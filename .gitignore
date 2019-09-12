@@ -1,0 +1,13 @@
+*.iws
+.DS_Store
+.settings
+/*.log
+/*.zip
+**/.gradle/
+/build/
+/RCS
+/SAVE
+data
+images
+out
+pgdata

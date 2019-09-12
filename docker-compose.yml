@@ -1,0 +1,37 @@
+version: '3.7'
+
+services:
+  pgdb:
+    image: astrolabe/vosdb
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - net
+
+  vos:
+    image: astrolabe/dals
+    volumes:
+      - ./images:/vos/images
+    ports:
+      - "8080:8080"
+    networks:
+      - net
+    depends_on: 
+      - pgdb
+
+  firefly:
+    image: ipac/firefly:release-2019.2.1
+    volumes:
+      - ./images:/external
+    ports:
+      - "8888:8080"
+    networks:
+      - net
+    depends_on: 
+      - pgdb
+      - vos
+
+networks:
+  net:
