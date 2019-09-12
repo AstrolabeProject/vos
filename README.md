@@ -23,7 +23,7 @@ After a minute or so, you may verify that swarm mode is enabled:
    > docker info | grep Swarm
 ```
 
-You should see a response like this:
+If swarm mode is enabled, you should see a response like this:
 ```
 Swarm: active
 ```
@@ -37,18 +37,35 @@ Create a link (named `images`) to an existing directory of JWST images and catal
     > ln -s path/to/directory/containing/your/images images
 ```
 
+Next, create a directory named `pgdata` to hold the PostgreSQL data:
+```
+    > mkdir pgdata
+```
 
-#### 
+**If** you have a zipped PostgreSQL database, unzip it to the new pgdata directory:
+```
+    > unzip pgdata.zip
+```
 
-### Start and stop the VO Server
+### Start the VO Server
 
-To run the Astrolabe VO Server use the Docker `stack deploy` command:
+To run the Astrolabe VO Server use the `docker stack deploy` command:
 ```
     > docker stack deploy -c docker-compose.yml vos
 ```
 and then wait a few minutes for the VO Server containers to initialize.
 
-## TBD: RELOAD
+Note, that you can use the normal Docker commands to monitor the status of the VO Server containers. For example:
+```
+    > docker container ls -a
+```
+
+### :frowning_face: RELOAD the Configuration :frowning_face:
+
+> ***At present, there is a problem with the server which requires that the configuration be manually reloaded each time it is started. This problem is being addressed but, meanwhile, please follow the reload procedure below.***
+
+To manually reload the VO Server configuration, open this link in a browser:
+http://localhost:8080/dals/reload
 
 ## Access the VO Server
 
@@ -59,12 +76,20 @@ If deployment was successful, you will be able to access the VO Server and the F
 
 ### Access URLs
 
-The Astrolabe VO Server provides endpoints for data and image metadata retrieval via SCS (Simple Cone Search), SIA (Simple Image Access), and TAP (Table Access Protocol). The following URLs may be used by **local** VO clients (since this is, currently, only a local server):
+The Astrolabe VO Server provides endpoints for data and image metadata retrieval via SCS (Simple Cone Search), SIA (Simple Image Access), and TAP (Table Access Protocol). The following URLs may be used by **local VO clients** (since this is, currently, only a local server):
 
  - SCS for JWST image metadata: http://vos:8080/dals/scs-jwst
  - SCS for the JWST catalog: http://vos:8080/dals/scs-jcat
  - SIA for JWST image metadata: http://vos:8080/dals/sia-jwst
  - TAP for JWST catalog and image metadata: http://vos:8080/dals/tap-jwst
+
+### Stop the VO Server
+
+To stop the VO Server use the `docker stack rm` command:
+```
+    > docker stack rm vos
+```
+The VO Server containers should stop within a minute or two.
 
 ## License
 
