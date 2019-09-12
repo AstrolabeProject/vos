@@ -11,16 +11,24 @@ Author: [Tom Hicks](https://github.com/hickst)
 
 ***Note**: Installation of the Astrolabe VO Server requires a working Docker installation, version 18.06 or greater, and **Docker  must  be running in swarm mode** (instructions below).*
 
-### Enable Docker swarm mode
+### 1. Checkout this project
+
+Git `clone` this project to your local disk and enter the project directory:
+```
+  > git clone https://github.com/AstrolabeProject/vos.git
+  > cd vos
+```
+
+### 2. Enable Docker swarm mode
 
 The containers which make up the Astrolabe VO Server are orchestrated by running Docker in "swarm" mode. Swarm mode is not enabled by default. To enable swarm mode in your running Docker engine, open a shell window and type:
 ```
-   > docker swarm init
+ > docker swarm init
 ```
 
 After a minute or so, you may verify that swarm mode is enabled:
 ```
-   > docker info | grep Swarm
+ > docker info | grep Swarm
 ```
 
 If swarm mode is enabled, you should see a response like this:
@@ -28,41 +36,46 @@ If swarm mode is enabled, you should see a response like this:
 Swarm: active
 ```
 
-### Prepare the local deployment directory
+### 3. Prepare the deployment
 
 In this initial version of the VO Server, all data and images reside on your local host machine. To setup the server, you must first create the data and link to the images. **The data directory and images links must be created  in the working directory for this project** (i.e. the directory into which you checked out this project).
 
-Create a link (named `images`) to an existing directory of JWST images and catalogs on your local disk:
+Create a link (named "**images**") to an existing directory of JWST images and catalogs on your local disk:
 ```
-    > ln -s path/to/directory/containing/your/images images
-```
-
-Next, create a directory named `pgdata` to hold the PostgreSQL data:
-```
-    > mkdir pgdata
+  > ln -s path/to/directory/of/your/JWST/fits/files ./images
 ```
 
-**If** you have a zipped PostgreSQL database, unzip it to the new pgdata directory:
-```
-    > unzip pgdata.zip
-```
-
-### Start the VO Server
+### 4. Start the VO Server
 
 To run the Astrolabe VO Server use the `docker stack deploy` command:
 ```
-    > docker stack deploy -c docker-compose.yml vos
+  > docker stack deploy -c docker-compose.yml vos
 ```
-and then wait a few minutes for the VO Server containers to initialize.
+and then wait for the VO Server containers to initialize, which **may take several minutes** as the containers must be downloaded (the first time only) and started.
 
-Note, that you can use the normal Docker commands to monitor the status of the VO Server containers. For example:
+You can use common Docker commands to monitor the status of the VO Server containers. The `docker service` command shows whether all 3 VO Server containers have been instantiated:
 ```
-    > docker container ls -a
+  > docker service ls
+ID                  NAME                MODE                REPLICAS            IMAGE                           PORTS
+we6clxxksey1        vos_firefly         replicated          1/1                 ipac/firefly:release-2019.2.1   *:8888->8080/tcp
+xo34qn5sj49i        vos_pgdb            replicated          1/1                 astrolabe/vosdb:latest          *:5432->5432/tcp
+8pk7v629zraq        vos_vos             replicated          1/1                 astrolabe/dals:latest           *:8080->8080/tcp
 ```
+The VO Server will be ready when the `REPLICAS` column shows 1/1 for all three VO Server containers.
 
-### :frowning_face: RELOAD the Configuration :frowning_face:
+Similarly, the `docker container` command can also provide status for the VO Server containers:
+```
+  > docker container ls -a
+    CONTAINER ID        IMAGE                           COMMAND                  CREATED             STATUS              PORTS                NAMES
+8ddc1bb670af        astrolabe/dals:latest           "catalina.sh run"        20 hours ago        Up 20 hours         8080/tcp             vos_vos.1.4v9h4pj7mtmwgubisxgb63st2
+2d5c52ed072a        astrolabe/vosdb:latest          "docker-entrypoint.s…"   20 hours ago        Up 20 hours         5432/tcp             vos_pgdb.1.rn0ivpiyi2wg5unqbq2yidvfx
+495006c7b5ba        ipac/firefly:release-2019.2.1   "/bin/bash -c './lau…"   20 hours ago        Up 20 hours         5050/tcp, 8080/tcp   vos_firefly.1.y0sjhh4wn9puwu3e0n6wrmwo4
+```
+The `STATUS` column (to the right) should eventually show "Up" for all 3 VO Server containers.
 
-> ***At present, there is a problem with the server which requires that the configuration be manually reloaded each time it is started. This problem is being addressed but, meanwhile, please follow the reload procedure below.***
+## 5. :frowning_face: RELOAD the Configuration :frowning_face:
+
+> ***At present, there is a problem with the server which requires that the configuration be manually reloaded each time it is started. This problem is being investigated but, meanwhile, please follow the reload procedure below.***
 
 To manually reload the VO Server configuration, open this link in a browser:
 http://localhost:8080/dals/reload
@@ -71,7 +84,7 @@ http://localhost:8080/dals/reload
 
 If deployment was successful, you will be able to access the VO Server and the Firefly viewer from within a browser on your local machine:
 
- - Access the VO Server at [http://localhost:8080/dals/](http://localhost:8080/dals/)  
+  - Access the VO Server at [http://localhost:8080/dals/](http://localhost:8080/dals/)
   - Access the Firefly viewer at [http://localhost:8888/firefly](http://localhost:8888/firefly)
 
 ### Access URLs
@@ -83,13 +96,13 @@ The Astrolabe VO Server provides endpoints for data and image metadata retrieval
  - SIA for JWST image metadata: http://vos:8080/dals/sia-jwst
  - TAP for JWST catalog and image metadata: http://vos:8080/dals/tap-jwst
 
-### Stop the VO Server
+### Stopping the VO Server
 
 To stop the VO Server use the `docker stack rm` command:
 ```
-    > docker stack rm vos
+  > docker stack rm vos
 ```
-The VO Server containers should stop within a minute or two.
+The VO Server containers should stop within a minute or so. This can be monitored with the Docker commands given (above) in the Startup section.
 
 ## License
 
