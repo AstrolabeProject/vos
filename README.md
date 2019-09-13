@@ -31,14 +31,14 @@ After a minute or so, you may verify that swarm mode is enabled:
  > docker info | grep Swarm
 ```
 
-If swarm mode is enabled, you should see a response like this:
+If swarm mode is enabled, you should see a positive response like this:
 ```
 Swarm: active
 ```
 
 ### 3. Prepare the deployment
 
-In this initial version of the VO Server, all data and images reside on your local host machine. To setup the server, you must first create the data and link to the images. **The data directory and images links must be created  in the working directory for this project** (i.e. the directory into which you checked out this project).
+In this initial version of the VO Server, all data and images reside on your local host machine. To set up the server, you must first create the data directory and link to the images. **The data directory and images links must be created  in the working directory for this project** (i.e. the directory into which you checked out this project).
 
 Create a link (named "**images**") to an existing directory of JWST images and catalogs on your local disk:
 ```
@@ -103,6 +103,30 @@ To stop the VO Server use the `docker stack rm` command:
   > docker stack rm vos
 ```
 The VO Server containers should stop within a minute or so. This can be monitored with the Docker commands given (above) in the Startup section.
+
+## Connecting Firefly
+
+### Loading images from the local disk
+
+After opening the Firefly viewer in a browser, you can load one of the images from your local image directory as follows:
+
+ 1. Click the `Images` button on the top button bar to bring up the `Images Search` window.
+ 2. Select `URL` in the `Select Image Source` box.
+ 3. Enter the *file URL* for one of the images in your local image directory. Precede the actual filename with `file:///external/`. For example: `file:///external/goods_s_F356W_2018_08_30.fits`
+ 4. Click the `Search` button at the bottom of the `Images Search` window.
+ 5. The image should load in about 10-15 seconds.
+
+### Load the JWST Catalog from the VO Server
+
+To search the JWST catalog in the local VO Server:
+
+ 1. Click the Catalogs button on the top button bar to bring up the catalogs window.
+ 2. Select the `VO Catalog` tab at the top of the catalogs window.
+ 3. Enter coordinates (no names) for the search, such as `53.16 -27.78`
+ 4. Select a search radius and units, such as `4 arcseconds`
+ 5. Enter the `Cone Search URL` for the local VO Server, which is `http://vos:8080/dals/scs-jcat`
+ 6. Click the `Search` button at the bottom of the catalogs window.
+ 7. The results from the catalog search should open and display next to the previously loaded image.
 
 ## License
 
