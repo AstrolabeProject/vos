@@ -27,26 +27,27 @@ services:
     depends_on:
       - pgdb
 
-  firefly:
-    image: ipac/firefly:release-2019.2.1
-    deploy:
-      restart_policy:
-        condition: none
-    environment:
-      - DEBUG
-      - _JAVA_OPTIONS=-Xms512m -Xmx8092m
-    volumes:
-      - ./images:/external
-    ports:
-      - "8888:8080"
-    networks:
-      - net
-    depends_on:
-      - pgdb
-      - vos
+  # firefly:
+  #   image: ipac/firefly:release-2019.2.1
+  #   deploy:
+  #     restart_policy:
+  #       condition: none
+  #   environment:
+  #     - DEBUG
+  #     - _JAVA_OPTIONS=-Xms512m -Xmx8092m
+  #   volumes:
+  #     - ./images:/external
+  #   ports:
+  #     - "8888:8080"
+  #   networks:
+  #     - net
+  #   depends_on:
+  #     - pgdb
+  #     - vos
 
 networks:
   net:
+    attachable: true
 
 volumes:
   pgdata:
