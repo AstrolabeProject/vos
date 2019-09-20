@@ -4,7 +4,7 @@ JOPTS=-Xms512m -Xmx8092m
 NET=vos_net
 PORT=8888
 
-.PHONY: help up down execff runff runffD
+.PHONY: help up down execff runff runffD stopff
 
 help:
 	@echo 'Make what? help, up, down, execff, runff, runffD'
@@ -14,6 +14,7 @@ help:
 	@echo '           execff - exec into running Firefly container'
 	@echo '           runff  - start a standalone Firefly container'
 	@echo '           runffD - start a standalone Firefly container in DEBUG mode'
+	@echo '           stopff - stop a running standalone Firefly container'
 
 up:
 	docker stack deploy -c docker-compose.yml $(APP)
