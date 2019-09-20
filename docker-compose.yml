@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   pgdb:
-    image: astrolabe/vosdb
+    image: astrolabe/vosdb:latest
     deploy:
       restart_policy:
         condition: on-failure
@@ -14,7 +14,7 @@ services:
       - net
 
   vos:
-    image: astrolabe/dals
+    image: astrolabe/dals:latest
     deploy:
       restart_policy:
         condition: on-failure
