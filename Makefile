@@ -1,8 +1,9 @@
-APP=vos
-FF=ipac/firefly:release-2019.2.1
-JOPTS=-Xms512m -Xmx8092m
+FF=ff
+FFIMG=ipac/firefly:release-2019.2.1
+JOPTS='_JAVA_OPTIONS=-Xms512m -Xmx8092m'
 NET=vos_net
 PORT=8888
+STACK=vos
 
 .PHONY: help up down execff runff runffD stopff
 
@@ -17,19 +18,19 @@ help:
 	@echo '           stopff - stop a running standalone Firefly container'
 
 up:
-	docker stack deploy -c docker-compose.yml $(APP)
+	docker stack deploy -c docker-compose.yml ${STACK}
 
 down:
-	docker stack rm $(APP)
+	docker stack rm ${STACK}
 
 execff:
-	docker exec -it ff bash
+	docker exec -it ${FF} bash
 
 runff:
-	docker run -d --rm --name ff --network $(NET) -p$(PORT):8080 -e '_JAVA_OPTIONS=$(JOPTS)' -v ${PWD}/images:/external $(FF)
+	docker run -d --rm --name ${FF} --network ${NET} -p${PORT}:8080 -e ${JOPTS} -v ${PWD}/images:/external ${FFIMG}
 
 runffD:
-	docker run -d --rm --name ff --network $(NET) -p$(PORT):8080 -e '_JAVA_OPTIONS=$(JOPTS)' -e 'DEBUG=TRUE' -v ${PWD}/images:/external $(FF)
+	docker run -d --rm --name ${FF} --network ${NET} -p${PORT}:8080 -e ${JOPTS} -e 'DEBUG=TRUE' -v ${PWD}/images:/external ${FFIMG}
 
 stopff:
-	docker stop ff
+	docker stop ${FF}
