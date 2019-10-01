@@ -1,5 +1,7 @@
 FF=ff
 FFIMG=ipac/firefly:release-2019.2.1
+FFP=ffp
+FFPIMG=astrolabe/ffp
 JOPTS='_JAVA_OPTIONS=-Xms512m -Xmx8092m'
 NET=vos_net
 PORT=8888
@@ -32,5 +34,11 @@ runff:
 runffD:
 	docker run -d --rm --name ${FF} --network ${NET} -p${PORT}:8080 -e ${JOPTS} -e 'DEBUG=TRUE' -v ${PWD}/images:/external ${FFIMG}
 
+runff-nonet:
+	docker run -d --rm --name ${FF} -p${PORT}:8080 -e ${JOPTS} -v ${PWD}/images:/external ${FFIMG}
+
 stopff:
 	docker stop ${FF}
+
+loadData:
+	docker run -it --rm --network ${NET} --name ${FFP} -v ${PWD}/images:/images ${FFPIMG} --verbose /images
