@@ -71,9 +71,10 @@ The `docker container` command can also provide status for the VO Server contain
 2d5c52ed072a        astrolabe/vosdb:latest          "docker-entrypoint.s…"   20 hours ago        Up 20 hours         5432/tcp             vos_pgdb.1.rn0ivpiyi2wg5unqbq2yidvfx
 495006c7b5ba        ipac/firefly:release-2019.2.1   "/bin/bash -c './lau…"   20 hours ago        Up 20 hours         5050/tcp, 8080/tcp   vos_firefly.1.y0sjhh4wn9puwu3e0n6wrmwo4
 ```
-The `STATUS` column (to the right) should eventually show "Up" for all 3 VO Server containers.
+The `STATUS` column (to the right) should eventually show "Up" for all three VO Server containers.
 
-### 5. Extract and load a JWST catalog and metadata from FITS files
+
+### 5. Load a JWST catalog, extract and load metadata from FITS files
 
 The VO Server is now ready to be loaded with a JWST catalog and image metadata, extracted from the JWST FITS files which reside on your hard disk.
 
@@ -85,11 +86,11 @@ The extraction and loading program is called FFP (for FITS File Processor) and i
 ```
 ***Note**: you only have to do this `pull` step **once** for it to reside on your local machine.*
 
-To run the FFP program, make sure that the VO Server is up (Step 4 above) and then call `Make` to extract and load the data from the `images` subdirectory of your current directory:
+To run the FFP program, make sure that the VO Server is running (Step 4 above) and then call `make` to extract and load the data from the `images` subdirectory of your current directory:
 ```
   > make loadData
 ```
-***Note**: Compressed (gzipped) JWST FITS images take about 15 seconds each (compared to about 1/4 second each when uncompressed). The JWST catalog takes about 5 minutes to process, so please be patient.*
+***Note**: Loading compressed (gzipped) JWST FITS images take about 15 seconds per image (compared to about 1/4 second each when uncompressed). The JWST catalog takes about 5 minutes to process, so please be patient.*
 
 
 ## Access the VO Server
@@ -128,7 +129,7 @@ After opening the Firefly viewer in a browser, you can load one of the images fr
  4. Click the `Search` button at the bottom of the `Images Search` window.
  5. The image should load in about 10-15 seconds.
 
-### Load the JWST Catalog from the VO Server
+### Loading the JWST catalog into Firefly from the VO Server
 
 To search the JWST catalog in the local VO Server:
 
