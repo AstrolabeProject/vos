@@ -3,7 +3,7 @@
 
 This is a public code repository of the [Astrolabe Project](http://astrolabe.arizona.edu/) at the [University of Arizona](http://www.arizona.edu).
 
-Author: [Tom Hicks](https://github.com/hickst)
+**Author**: [Tom Hicks](https://github.com/hickst)
 
 **Purpose**: This is an Integration project which documents, coordinates, and administers the separate containerized components of the Astrolabe Virtual Observatory Server.
 
@@ -26,7 +26,7 @@ The containers which make up the Astrolabe VO Server are orchestrated by running
  > docker swarm init
 ```
 
-After a minute or so, you may verify that swarm mode is enabled:
+After a few seconds, you may verify that swarm mode is enabled:
 ```
  > docker info | grep Swarm
 ```
@@ -38,11 +38,11 @@ Swarm: active
 
 ### 3. Prepare the deployment
 
-In this initial version of the VO Server, all data and images reside on your local host machine. To set up the server, you must first create the data directory and link to the images. **The data directory and images links must be created  in the working directory for this project** (i.e. the directory into which you checked out this project).
+In this initial version of the VO Server, all data and images reside on your local host machine. To set up the server, you must create a directory containing your images, or link to an existing one. **The image directory (or link) must be created in the working directory for this project** (i.e. the directory into which you checked out this project).
 
-Create a link (named "**images**") to an existing directory of JWST images and catalogs on your local disk:
+To create a link (which must be named "*images*") to an existing directory of JWST images and catalogs on your local disk:
 ```
-  > ln -s path/to/directory/of/your/JWST/fits/files ./images
+  > ln -s path/to/directory/of/your/JWST/fits/files images
 ```
 
 ### 4. Start the VO Server
@@ -53,7 +53,7 @@ To run the Astrolabe VO Server use the `docker stack deploy` command:
 ```
 and then wait for the VO Server containers to initialize, which **may take several minutes** as the containers must be downloaded (the first time only) and started.
 
-You can use common Docker commands to monitor the status of the VO Server containers. The `docker service` command shows whether all 3 VO Server containers have been instantiated:
+You can use common Docker commands to monitor the status of the VO Server containers. The `docker service` command shows whether all three VO Server containers have been instantiated:
 ```
   > docker service ls
 ID                  NAME                MODE                REPLICAS            IMAGE                           PORTS
@@ -63,7 +63,7 @@ xo34qn5sj49i        vos_pgdb            replicated          1/1                 
 ```
 The VO Server will be ready when the `REPLICAS` column shows 1/1 for all three VO Server containers.
 
-Similarly, the `docker container` command can also provide status for the VO Server containers:
+The `docker container` command can also provide status for the VO Server containers:
 ```
   > docker container ls -a
     CONTAINER ID        IMAGE                           COMMAND                  CREATED             STATUS              PORTS                NAMES
@@ -73,12 +73,24 @@ Similarly, the `docker container` command can also provide status for the VO Ser
 ```
 The `STATUS` column (to the right) should eventually show "Up" for all 3 VO Server containers.
 
-## 5. :frowning_face: RELOAD the Configuration :frowning_face:
+### 5. Extract and load a JWST catalog and metadata from FITS files
 
-> ***At present, there is a problem with the server which requires that the configuration be manually reloaded each time it is started. This problem is being investigated but, meanwhile, please follow the reload procedure below.***
+The VO Server is now ready to be loaded with a JWST catalog and image metadata, extracted from the JWST FITS files which reside on your hard disk.
 
-To manually reload the VO Server configuration, open this link in a browser:
-http://localhost:8080/dals/reload
+***Note**: you only have to extract and load the data into the VO Server **once**; when you first install it. Docker will retain the data in a local database between runs of the VO Server.*
+
+The extraction and loading program is called FFP (for FITS File Processor) and is available as another Astrolabe Docker container. To download the FFP program:
+```
+  > docker pull astrolabe/ffp
+```
+***Note**: you only have to do this `pull` step **once** for it to reside on your local machine.*
+
+To run the FFP program, make sure that the VO Server is up (Step 4 above) and then call `Make` to extract and load the data from the `images` subdirectory of your current directory:
+```
+  > make loadData
+```
+***Note**: Compressed (gzipped) JWST FITS images take about 15 seconds each (compared to about 1/4 second each when uncompressed). The JWST catalog takes about 5 minutes to process, so please be patient.*
+
 
 ## Access the VO Server
 
@@ -106,7 +118,7 @@ The VO Server containers should stop within a minute or so. This can be monitore
 
 ## Connecting Firefly
 
-### Loading images from the local disk
+### Loading images into Firefly from the local disk
 
 After opening the Firefly viewer in a browser, you can load one of the images from your local image directory as follows:
 
@@ -130,7 +142,7 @@ To search the JWST catalog in the local VO Server:
 
 ## License
 
-Software licensed under Apache License Version 2.0. 
+Software licensed under Apache License Version 2.0.
 
 Copyright (c) The University of Arizona, 2019. All rights reserved.
 
