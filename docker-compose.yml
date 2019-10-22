@@ -1,6 +1,20 @@
 version: '3.7'
 
 services:
+  redis:
+    image: redis:5-alpine
+    command: redis-server --requirepass devpassword
+    deploy:
+      restart_policy:
+        condition: on-failure
+    networks:
+      - net
+    volumes:
+      - redis:/var/lib/redis/data
+    ports:
+      - '6379:6379'
+
+
   pgdb:
     image: astrolabe/vosdb:latest
     deploy:
@@ -13,6 +27,7 @@ services:
     networks:
       - net
 
+
   vos:
     image: astrolabe/dals:latest
     deploy:
@@ -21,29 +36,42 @@ services:
     volumes:
       - ./images:/vos/images
     ports:
-      - "8080:8080"
+      - "8090:8080"
     networks:
       - net
     depends_on:
       - pgdb
 
-  firefly:
-    image: ipac/firefly:release-2019.2.1
+
+  celery:
+    image: cuts:devel
+    command: celery worker -l debug -A cuts.blueprints.img.tasks
+    deploy:
+      restart_policy:
+        condition: none
+    networks:
+      - net
+    depends_on:
+      - redis
+
+
+  cuts:
+    image: cuts:devel
     deploy:
       restart_policy:
         condition: none
     environment:
-      - DEBUG
-      - _JAVA_OPTIONS=-Xms512m -Xmx8092m
-    volumes:
-      - ./images:/external
-    ports:
-      - "8888:8080"
+      PYTHONUNBUFFERED: 'true'
     networks:
       - net
+    volumes:
+#     - '.:/cuts'
+      - './images:/vos/images:ro'
+    ports:
+      - '8000:8000'
     depends_on:
-      - pgdb
-      - vos
+      - celery
+
 
 networks:
   net:
@@ -51,3 +79,23 @@ networks:
 
 volumes:
   pgdata:
+  redis:
+
+
+  # firefly:
+  #   image: ipac/firefly:release-2019.2.1
+  #   deploy:
+  #     restart_policy:
+  #       condition: none
+  #   environment:
+  #     - DEBUG
+  #     - _JAVA_OPTIONS=-Xms512m -Xmx8092m
+  #   volumes:
+  #     - ./images:/external
+  #   ports:
+  #     - "8888:8080"
+  #   networks:
+  #     - net
+  #   depends_on:
+  #     - pgdb
+  #     - vos
