@@ -65,7 +65,7 @@ services:
     networks:
       - net
     volumes:
-#     - '.:/cuts'
+      - './cuts:/cuts:ro'
       - './images:/vos/images:ro'
     ports:
       - '8000:8000'
