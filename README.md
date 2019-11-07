@@ -105,7 +105,7 @@ To run the FFP program, make sure that the VO Server is running (Step 4 above) a
 
 If deployment was successful, you will be able to access the VO Server from within a browser on your local machine:
 
-  - Access the VO Server at [http://localhost:8080/dals/](http://localhost:8080/dals/)
+  - Access the VO Server at [http://localhost:8090/dals/](http://localhost:8090/dals/)
 
 More commonly, however, you will probably want to access the VO Server from the [Astrolabe customized version of Firefly](https://github.com/AstrolabeProject/firefly-al). Please refer to that project for instructions on how to start a Firefly viewer which connects to your running VO Server.
 
@@ -113,12 +113,14 @@ More commonly, however, you will probably want to access the VO Server from the 
 
 The Astrolabe VO Server provides endpoints for data and image metadata retrieval via SCS (Simple Cone Search), SIA (Simple Image Access), and TAP (Table Access Protocol). The following URLs may be used by **local VO clients** (since this is, currently, only a local server):
 
- - SCS for JWST image metadata: http://vos:8080/dals/scs-jwst
- - SCS for the JWST catalog: http://vos:8080/dals/scs-jcat
- - SIA for JWST image metadata: http://vos:8080/dals/sia-jwst
- - TAP for JWST catalog and image metadata: http://vos:8080/dals/tap-jwst
+ - SCS for JWST image metadata: http://localhost:8090/dals/scs-jwst
+ - SCS for the JWST catalog: http://localhost:8090/dals/scs-jcat
+ - SIA for JWST image metadata: http://localhost:8090/dals/sia-jwst
+ - TAP for JWST catalog and image metadata: http://localhost:8090/dals/tap-jwst
 
 ### Stopping the VO Server
+
+***Note**: If you have also started an [Astrolabe customized version of Firefly](https://github.com/AstrolabeProject/firefly-al), you must stop Firefly **before** stopping the VO Server.*
 
 To stop the VO Server use the `docker stack rm` command:
 ```
