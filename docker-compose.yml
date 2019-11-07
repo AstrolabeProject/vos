@@ -2,15 +2,13 @@ version: '3.7'
 
 services:
   redis:
-    image: redis:5-alpine
+    image: redis:5.0-alpine
     command: redis-server --requirepass devpassword
     deploy:
       restart_policy:
-        condition: on-failure
-    networks:
-      - net
+        condition: none
     volumes:
-      - redis:/var/lib/redis/data
+      - redis:/data
     ports:
       - '6379:6379'
 
@@ -24,8 +22,16 @@ services:
       - pgdata:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-    networks:
-      - net
+
+
+  celery:
+    image: astrolabe/cuts:latest
+    command: celery worker -l debug -A cuts.blueprints.img.tasks
+    deploy:
+      restart_policy:
+        condition: none
+    depends_on:
+      - redis
 
 
   vos:
@@ -37,35 +43,18 @@ services:
       - ./images:/vos/images
     ports:
       - "8090:8080"
-    networks:
-      - net
     depends_on:
       - pgdb
 
 
-  celery:
-    image: cuts:devel
-    command: celery worker -l debug -A cuts.blueprints.img.tasks
-    deploy:
-      restart_policy:
-        condition: none
-    networks:
-      - net
-    depends_on:
-      - redis
-
-
   cuts:
-    image: cuts:devel
+    image: astrolabe/cuts:latest
     deploy:
       restart_policy:
         condition: none
     environment:
       PYTHONUNBUFFERED: 'true'
-    networks:
-      - net
     volumes:
-      - './cuts:/cuts:ro'
       - './images:/vos/images:ro'
     ports:
       - '8000:8000'
@@ -73,21 +62,9 @@ services:
       - celery
 
 
-  visualizer:
-    image: dockersamples/visualizer:stable
-    ports:
-      - "9090:8080"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
-    deploy:
-      placement:
-        constraints: [node.role == manager]
-    networks:
-      - net
-
-
 networks:
-  net:
+  default:
+    name: vos_net
     attachable: true
 
 volumes:
@@ -95,20 +72,12 @@ volumes:
   redis:
 
 
-  # firefly:
-  #   image: ipac/firefly:release-2019.2.1
-  #   deploy:
-  #     restart_policy:
-  #       condition: none
-  #   environment:
-  #     - DEBUG
-  #     - _JAVA_OPTIONS=-Xms512m -Xmx8092m
-  #   volumes:
-  #     - ./images:/external
+  # visualizer:
+  #   image: dockersamples/visualizer:stable
   #   ports:
-  #     - "8888:8080"
-  #   networks:
-  #     - net
-  #   depends_on:
-  #     - pgdb
-  #     - vos
+  #     - "9090:8080"
+  #   volumes:
+  #     - "/var/run/docker.sock:/var/run/docker.sock"
+  #   deploy:
+  #     placement:
+  #       constraints: [node.role == manager]
