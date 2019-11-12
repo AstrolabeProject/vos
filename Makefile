@@ -1,5 +1,5 @@
 FF=ff
-FFIMG=ipac/firefly:release-2019.2.1
+FFIMG=ipac/firefly:rc-2019.3
 FFP=ffp
 FFPIMG=astrolabe/ffp
 JOPTS='_JAVA_OPTIONS=-Xms512m -Xmx8092m'
@@ -18,6 +18,7 @@ help:
 	@echo '           runff  - start a standalone Firefly container'
 	@echo '           runffD - start a standalone Firefly container in DEBUG mode'
 	@echo '           stopff - stop a running standalone Firefly container'
+	@echo '           loadData - load FITS files from ./images into database (ONLY RUN ONCE)'
 
 up:
 	docker stack deploy -c docker-compose.yml ${STACK}
