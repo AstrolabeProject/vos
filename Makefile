@@ -1,8 +1,10 @@
+ENVLOC=/etc/trhenv
 FF=ff
 FFIMG=ipac/firefly:rc-2019.3
 FFP=ffp
 FFPIMG=astrolabe/ffp
 JOPTS='_JAVA_OPTIONS=-Xms512m -Xmx8092m'
+NAME=vos_vos.1
 NET=vos_net
 PORT=8888
 STACK=vos
@@ -25,6 +27,10 @@ up:
 
 down:
 	docker stack rm ${STACK}
+
+exec:
+	docker cp .bash_env ${NAME}:${ENVLOC}
+	docker exec -it ${NAME} bash
 
 execff:
 	docker exec -it ${FF} bash
