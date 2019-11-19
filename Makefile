@@ -20,7 +20,9 @@ help:
 	@echo '           runff  - start a standalone Firefly container'
 	@echo '           runffD - start a standalone Firefly container in DEBUG mode'
 	@echo '           stopff - stop a running standalone Firefly container'
-	@echo '           loadData - load FITS files from ./images into database (ONLY RUN ONCE)'
+	@echo '           loadData - load all FITS files from ./images into database (ONLY RUN ONCE)'
+	@echo '           loadCatalogs - load FITS catalogs from ./images into database (ONLY RUN ONCE)'
+	@echo '           loadImages - load FITS images from ./images into database (ONLY RUN ONCE)'
 
 up:
 	docker stack deploy -c docker-compose.yml ${STACK}
@@ -49,3 +51,9 @@ stopff:
 
 loadData:
 	docker run -it --rm --network ${NET} --name ${FFP} -v ${PWD}/images:/images ${FFPIMG} --verbose /images
+
+loadCatalogs:
+	docker run -it --rm --network ${NET} --name ${FFP} -v ${PWD}/images:/images ${FFPIMG} --verbose --skip-images /images
+
+loadImages:
+	docker run -it --rm --network ${NET} --name ${FFP} -v ${PWD}/images:/images ${FFPIMG} --verbose --skip-catalogs /images
