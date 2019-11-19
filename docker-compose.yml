@@ -34,7 +34,7 @@ services:
       - redis
 
 
-  vos:
+  dals:
     image: astrolabe/dals:latest
     deploy:
       restart_policy:
@@ -42,7 +42,7 @@ services:
     volumes:
       - ./images:/vos/images
     ports:
-      - "8090:8080"
+      - "8080:8080"
     depends_on:
       - pgdb
 
@@ -70,14 +70,3 @@ networks:
 volumes:
   pgdata:
   redis:
-
-
-  # visualizer:
-  #   image: dockersamples/visualizer:stable
-  #   ports:
-  #     - "9090:8080"
-  #   volumes:
-  #     - "/var/run/docker.sock:/var/run/docker.sock"
-  #   deploy:
-  #     placement:
-  #       constraints: [node.role == manager]
