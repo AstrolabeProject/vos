@@ -15,6 +15,7 @@ help:
 	@echo 'Make what? help, up, down, execff, runff, runffD'
 	@echo '    where: help   - show this help message'
 	@echo '           up     - start all VOS containers'
+	@echo '           up-dev - start all VOS development containers'
 	@echo '           down   - stop all VOS containers'
 	@echo '           execff - exec into running Firefly container'
 	@echo '           runff  - start a standalone Firefly container'
@@ -26,6 +27,9 @@ help:
 
 up:
 	docker stack deploy -c docker-compose.yml ${STACK}
+
+up-dev:
+	docker stack deploy -c docker-compose-dev.yml ${STACK}
 
 down:
 	docker stack rm ${STACK}
