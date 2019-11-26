@@ -26,6 +26,7 @@ help:
 	@echo '           loadImages - load FITS images from ./images into database (ONLY RUN ONCE)'
 
 up:
+	echo "Starting PRODUCTION stack..."
 	docker stack deploy -c docker-compose.yml ${STACK}
 
 up-dev:
