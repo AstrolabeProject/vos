@@ -2,7 +2,7 @@ ENVLOC=/etc/trhenv
 FF=ff
 FFIMG=ipac/firefly:rc-2019.3
 FFP=ffp
-FFPIMG=astrolabe/ffp
+FFPIMG=ffp:devel
 JOPTS='_JAVA_OPTIONS=-Xms512m -Xmx8092m'
 NAME=vos_vos.1
 NET=vos_net
