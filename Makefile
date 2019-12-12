@@ -9,7 +9,7 @@ NET=vos_net
 PORT=8888
 STACK=vos
 
-.PHONY: help up down execff runff runffD setup stopff up-dev up-pro loadData loadCatalogs loadImages
+.PHONY: help down execff runff runffD setup stopff up-dev up-pro loadData loadCatalogs loadImages
 
 help:
 	@echo 'Make what? help, up, down, execff, runff, runffD'
@@ -18,10 +18,10 @@ help:
 	@echo '           execff - exec into running Firefly container'
 	@echo '           runff  - start a standalone Firefly container'
 	@echo '           runffD - start a standalone Firefly container in DEBUG mode'
-        @echo '           setup  - download all component containers from DockerHub'
+	@echo '           setup  - download all component containers from DockerHub'
 	@echo '           stopff - stop a running standalone Firefly container'
 	@echo '           up-dev - start all VOS development containers'
-	@echo '           up-pro - start all VOS containers'
+	@echo '           up-pro - start all VOS production containers'
 	@echo '           loadData - load all FITS files from ./images into database (ONLY RUN ONCE)'
 	@echo '           loadCatalogs - load FITS catalogs from ./images into database (ONLY RUN ONCE)'
 	@echo '           loadImages - load FITS images from ./images into database (ONLY RUN ONCE)'
