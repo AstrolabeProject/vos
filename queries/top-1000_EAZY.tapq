@@ -1,0 +1,3 @@
+select top 1000 * from sia.eazy
+where s_ra >53.15800 and s_ra < 53.16100 and s_dec < -27.78 and s_dec > -27.78300
+order by s_ra desc, s_dec desc, z_spec desc

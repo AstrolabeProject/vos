@@ -1,0 +1,3 @@
+SELECT * from sia.jaguar
+where max_stellar_age > 9.95
+order by max_stellar_age desc, redshift desc

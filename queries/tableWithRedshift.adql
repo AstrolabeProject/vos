@@ -1,0 +1,4 @@
+SELECT t.table_name, t.description, c.column_name, c.ucd AS redshift
+FROM tap_schema.tables AS t
+JOIN tap_schema.columns AS c ON t.table_name = c.table_name
+WHERE c.ucd = 'redshift'

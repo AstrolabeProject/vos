@@ -1,0 +1,3 @@
+select top 200 * from sia.photometric
+where redshift >= 6.0
+order by redshift desc, s_ra desc, s_dec desc
