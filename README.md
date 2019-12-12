@@ -9,7 +9,7 @@ This is a public code repository of the [Astrolabe Project](http://astrolabe.ari
 
 ## Installation
 
-***Note**: Installation of the Astrolabe VO Server requires a working Docker installation, version 19.03 or greater, and **Docker must be running in swarm mode** (instructions below).*
+***Note**: Installation of the Astrolabe VO Server requires a working Docker installation, version 18.09 or greater, and **Docker must be running in swarm mode** (instructions below).*
 
 ### 1. Checkout this project
 
@@ -38,24 +38,32 @@ Swarm: active
 
 ### 3. Prepare the deployment
 
-In this initial version of the VO Server, all data and images reside on your local host machine. To set up the server, you must create a directory containing your images, or link to an existing one. **The image directory (or link) must be created in the working directory for this project** (i.e. the directory into which you checked out this project).
+In this custom, standalone version of the VO Server, all images reside on your local host machine. To set up the server, you must create a directory containing your images, or link to an existing one. **The image directory (or link) must be created in the working directory for this project** (i.e. the directory into which you checked out this project).
 
-To create a link (which must be named "*images*") to an existing directory of JWST images and catalogs on your local disk:
+To create a link (which must be named "*images*") to an existing directory of JWST images on your local disk:
 ```
   > ln -s path/to/directory/of/your/JWST/fits/files images
 ```
 
-### 4. Start the VO Server
+### 4. Download the Server software
 
-To run the Astrolabe VO Server use the `docker stack deploy` command:
+To reduce the time necessary for the VO Server to start up, you should initially download the component containers. The VOS Makefile includes a command to do this:
 ```
-  > docker stack deploy -c docker-compose.yml vos
+  > make setup
 ```
-OR, if you are familiar with `Make`, use the convenient Makefile:
+Note that **it may take several minutes to download all the components**, so you probably have time to get a cup of coffee.
+
+### 5. Start the VO Server
+
+Once the components have been downloaded to your local host, you can run the Astrolabe VO Server using `Make`:
 ```
   > make up
 ```
-and then wait for the VO Server containers to initialize, which **may take several minutes** as the containers must be downloaded (the first time only) and started.
+OR, if you are familiar with Docker, you can issue the `docker stack deploy` command:
+```
+  > docker stack deploy -c docker-compose.yml vos
+```
+and then wait for the VO Server containers to initialize.
 
 You can use common Docker commands to monitor the status of the VO Server containers. The `docker service` command shows whether all five VO Server containers have been instantiated:
 ```
