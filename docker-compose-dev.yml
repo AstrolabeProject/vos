@@ -35,7 +35,7 @@ services:
 
 
   dals:
-    image: dals:devel
+    image: dals:1H
     deploy:
       restart_policy:
         condition: on-failure
@@ -70,14 +70,3 @@ networks:
 volumes:
   pgdata:
   redis:
-
-
-  # visualizer:
-  #   image: dockersamples/visualizer:stable
-  #   ports:
-  #     - "9090:8080"
-  #   volumes:
-  #     - "/var/run/docker.sock:/var/run/docker.sock"
-  #   deploy:
-  #     placement:
-  #       constraints: [node.role == manager]
