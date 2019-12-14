@@ -19,20 +19,18 @@ NAME=vos
 NET=vos_net
 STACK=vos
 
-.PHONY: help down runff stopff runjl stopjl setup loadData
+.PHONY: help down loadData runff stopff runjl stopjl setup up
 
 help:
-	@echo 'Make what? help, down, loadData, runff, stopff, runjl, stopjl, setup, up-dev, up-pro'
-	@echo '  where: help   - show this help message'
-	@echo '         down   - stop all VOS containers'
-	@echo '         runff  - start the custom Firefly container on the VOS network'
-	@echo '         stopff - stop the running Firefly container'
-	@echo '         runjl  - start the custom JupyterLab container on the VOS network'
-	@echo '         stopjl - stop the running JupyterLab container immediately (CAUTION)'
-	@echo '         setup  - download/update all component containers from DockerHub'
-	@echo '         up-dev - start all VOS development containers'
-	@echo '         up-pro - start all VOS production containers'
+	@echo 'Make what? help, up, setup, loadData, runff, stopff, runjl, down'
+	@echo '  where: help     - show this help message'
+	@echo '         up       - start all VOS production containers'
+	@echo '         setup    - download/update all component containers from DockerHub'
 	@echo '         loadData - download data and load it into the VOS database (ONLY RUN ONCE)'
+	@echo '         runff    - start the custom Firefly container on the VOS network'
+	@echo '         stopff   - stop the running Firefly container'
+	@echo '         runjl    - start the custom JupyterLab container on the VOS network'
+	@echo '         down     - stop all VOS containers'
 
 exec:
 	docker cp .bash_env ${NAME}:${ENVLOC}
@@ -62,10 +60,10 @@ setup: setup-base
 down:
 	docker stack rm ${STACK}
 
-up-dev: setup-base
+up-dev: # setup-base
 	docker stack deploy -c docker-compose-dev.yml ${STACK}
 
-up-pro: setup-pro
+up: # setup
 	echo "Starting PRODUCTION stack..."
 	docker stack deploy -c docker-compose.yml ${STACK}
 
