@@ -74,9 +74,10 @@ To use one of the JWST catalogs in the local VO Server:
  3. Enter coordinates for the search, such as `53.16 -27.78`
  4. Select a search radius and units, such as `4 arcseconds`
  5. Enter the `Cone Search URL` for one of the catalogs in the local VO Server:
-    **Jaguar catalog**: http://dals:8080/dals/scs-jaguar
-    **EAZY Results Summary catalog**: http://dals:8080/dals/scs-eazy
-    **Photometric catalog**: http://dals:8080/dals/scs-photo
+    1. **Jaguar catalog**: http://dals:8080/dals/scs-jaguar
+    2. **EAZY Results Summary catalog**: http://dals:8080/dals/scs-eazy
+    3. **Photometric catalog**: http://dals:8080/dals/scs-photo
+
  6. Click the `Search` button at the bottom of the catalogs window.
  7. The results from the catalog search should open and display next to the previously loaded image.
 
