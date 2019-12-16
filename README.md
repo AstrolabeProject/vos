@@ -103,19 +103,29 @@ To load the pre-built database, make sure that the VO Server is running (Step 5 
 ***Note**: This step downloads a 160+ megabyte file and installs it. Depending on your internet connection, this could take a couple minutes. You should see a progress bar during the download, then a bunch of database loading commands (which you can ignore).*
 
 
-## Access the VO Server and Image/Cutout server
+## Access the VO Server and Image/Cutout Server
 
-If deployment was successful, you will be able to access the VO and image/cutout servers from within a browser on your local machine:
+If deployment was successful, you will be able to access the VO and Image/Cutout servers from within a browser on your local machine:
 
   - Access the VO Server at [http://localhost:8080/dals/](http://localhost:8080/dals/)
   - Access the Image/Cutout Server at [http://localhost:8000/](http://localhost:8000/)
 
-Much more commonly, however, you will want to access the VO and Image/Cutout Servers from client software which has been customized to recognize these servers. In this release, we provide customized versions of Firefly and JupyterLab notebook to do just that.
+Much more commonly, however, you will want to access the VO and Image/Cutout servers from client software which has been customized to recognize these servers. In this release, we provide customized versions of Firefly and JupyterLab notebook.
+
+
+### Using the Astrolabe-customized version of Firefly
+
+For instructions on starting, stopping, and using the Astrolabe-customized version of Firefly, please see the [Firefly-AL document](https://github.com/AstrolabeProject/vos/blob/onehost/docs/Firefly-AL.md).
+
+
+### Using the Astrolabe-customized version of JupyterLab notebook
+
+For instructions on starting, stopping, and using the Astrolabe-customized version of JupyterLab notebook, please see the [JupAL document](https://github.com/AstrolabeProject/vos/blob/onehost/docs/JupAL.md).
 
 
 ### Access URLs
 
-The Astrolabe VO Server provides endpoints for data and image metadata retrieval via SCS (Simple Cone Search), SIA (Simple Image Access), and TAP (Table Access Protocol). The following URLs may be used by other, non-customized, **local VO clients** (since this is, currently, only a local server):
+The Astrolabe VO Server provides endpoints for data and image metadata retrieval via SCS (Simple Cone Search), SIA (Simple Image Access), and TAP (Table Access Protocol). The following URLs may be used by other, **non-customized, local VO clients** (local clients only since this is, currently, only a local server):
 
  - SCS for JWST image metadata: http://localhost:8080/dals/scs-jwst
  - SCS for the JWST Jaguar catalog: http://localhost:8080/dals/scs-jaguar
@@ -148,7 +158,7 @@ The VO Server containers should stop within a minute or so. This can be monitore
 
 ## License
 
-Software licensed under Apache License Version 2.0.
+This software is licensed under Apache License Version 2.0.
 
 Copyright (c) The University of Arizona, 2019. All rights reserved.
 
