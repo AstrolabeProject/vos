@@ -8,7 +8,7 @@ FFAL_PORT=8888
 JAL=jupal
 JAL_IMG=jupal:1H
 JAL_JOPTS='_JAVA_OPTIONS=-Xms512m -Xmx8192m'
-JAL_NB=${PWD}/notebooks
+JAL_WORK=${PWD}/work
 JAL_PORT=9999
 
 VDB=vosdbmgr
@@ -78,7 +78,7 @@ stopff:
 
 # run a custom version of JupyterLab on the VOS network
 runjl:
-	docker run -d --rm --name ${JAL} --network ${NET} -e ${JAL_JOPTS} -p${JAL_PORT}:8888 -v ${JAL_NB}:/home/jovyan/notebooks ${JAL_IMG}
+	docker run -d --rm --name ${JAL} --network ${NET} -e ${JAL_JOPTS} -p${JAL_PORT}:8888 -v ${JAL_WORK}:/home/jovyan/work ${JAL_IMG}
 
 stopjl:
 	docker stop ${JAL}
