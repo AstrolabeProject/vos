@@ -86,4 +86,5 @@ stopjl:
 
 # load data from the localhost into the VOS database
 loadData:
+	cp -p HorseHead.fits ${IMGS}
 	docker run -it --rm --name ${VDB} --network ${NET} ${VDB_IMG} -c load -l 'https://arizona.box.com/shared/static/hzfpzj71k4r3x2tpouccfycsug3yaxf4.gz' -v
