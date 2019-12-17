@@ -11,7 +11,7 @@ This is a public code repository of the [Astrolabe Project](http://astrolabe.ari
 
 ***Note**: Installation of the Astrolabe VO Server requires a working Docker installation, version 18.09 or greater, and **Docker must be running in swarm mode** (instructions below).*
 
-### 1. Checkout this project
+### 1. Checkout this project (ONCE)
 
 Git `clone` this project to your local disk and enter the project directory:
 ```
@@ -20,7 +20,7 @@ Git `clone` this project to your local disk and enter the project directory:
 ```
 
 
-### 2. Enable Docker swarm mode
+### 2. Enable Docker swarm mode (ONCE)
 
 The containers which make up the Astrolabe VO Server are orchestrated by running Docker in "swarm" mode. Swarm mode is not enabled by default. To enable swarm mode in your running Docker engine, open a shell window and type:
 ```
@@ -38,7 +38,7 @@ Swarm: active
 ```
 
 
-### 3. Prepare the deployment
+### 3. Prepare the deployment (ONCE)
 
 In this custom, standalone version of the VO Server, the database and all images reside on your local host machine. To set up the server, you must create a directory containing the JWST images, or link to an existing one. **The image directory (or link) must be created in the working directory for this project** (i.e. the directory into which you checked out this project).
 
@@ -48,7 +48,7 @@ To create a link (which must be named "*images*") to an existing directory of JW
 ```
 
 
-### 4. Download the Server software
+### 4. Download the Server software (ONCE)
 
 To reduce the time necessary for the VO Server to start up, you should initially download the component containers. The VOS Makefile includes a command to do this:
 ```
@@ -92,7 +92,7 @@ a9612421f3be        vosdb:devel         "docker-entrypoint.s…"   59 seconds ag
 The `STATUS` column (to the right) should eventually show "Up" for all five VO Server containers.
 
 
-### 6. Load a previously created database containing JWST catalogs and image data.
+### 6. Load a previously created database containing JWST catalogs and image data (ONCE)
 
 ***Note**: you only have to load the "canned" data into the VO Server database **once**; when you first install it. Docker will retain the data in the local database between runs of the VO Server.*
 
@@ -154,6 +154,11 @@ Finally, to stop the VO Server:
   > make down
 ```
 The VO Server containers should stop within a minute or so. This can be monitored with the Docker commands given (above) in the [Startup](#start-the-vo-server) section.
+
+
+## To Rerun the VO Server
+
+Most of the preceding installation steps need only be performed once per machine. Once installed, a stopped VO Server may be restarted simply by executing [Step 5](#start-the-vo-server) (the startup section above) and stopped as described immediately above.
 
 
 ## License
