@@ -63,11 +63,7 @@ This release includes several (read-only) sample notebooks located in the `work/
 
 ## Stopping JupyterLab
 
-To stop JupyterLab use the provided `make` command:
-```
-  > make stopjl
-```
-The JupyterLab container should stop within a minute or so. This can be monitored with the Docker commands given (above) in the [Start JupyterLab](#start-jupyterlab) section.
+In order to avoid losing work, the JupyterLab server is stopped from within the server itself, NOT via the VOS `Makefile`. To shutdown the JupyterLab server, select the `Shut Down` menu item from the `File` menu of the JupyterLab server page in the browser. Be sure to save your work from any modifed notebooks before you shutdown the JupyterLab server.
 
 
 ## License
