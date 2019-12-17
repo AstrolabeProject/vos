@@ -44,15 +44,6 @@ If deployment was successful, you will be able to access the customized version 
 ***Note**: The customizations in this version of Firefly are **only** available at the specificed **local** URL above (note it ends with `local`). They will not appear if you use the standard Firefly server URL (which ends with `firefly`).*
 
 
-## Stopping Firefly
-
-To stop Firefly use the provided `make` command:
-```
-  > make stopff
-```
-The Firefly container should stop within a minute or so. This can be monitored with the Docker commands given (above) in the [Start Firefly](#start-firefly) section.
-
-
 ## Using Firefly
 
 ### Loading cutouts into Firefly from the Images server
@@ -80,6 +71,15 @@ To use one of the JWST catalogs in the local VO Server:
 
  6. Click the `Search` button at the bottom of the catalogs window.
  7. The results from the catalog search should open and display next to the previously loaded image.
+
+
+## Stopping Firefly
+
+To stop Firefly use the provided `make` command:
+```
+  > make stopff
+```
+The Firefly container should stop within a minute or so. This can be monitored with the Docker commands given (above) in the [Start Firefly](#start-firefly) section.
 
 
 ## License
