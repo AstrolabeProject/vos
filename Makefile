@@ -1,18 +1,18 @@
 ENVLOC=/etc/trhenv
 
 FFAL=ffal
-FFAL_IMG=ffal:1H
+FFAL_IMG=astrolabe/ffal:1H
 FFAL_JOPTS='_JAVA_OPTIONS=-Xms512m -Xmx10240m'
 FFAL_PORT=8888
 
 JAL=jupal
-JAL_IMG=jupal:1H
+JAL_IMG=astrolabe/jupal:1H
 JAL_JOPTS='_JAVA_OPTIONS=-Xms512m -Xmx8192m'
 JAL_WORK=${PWD}/work
 JAL_PORT=9999
 
 VDB=vosdbmgr
-VDB_IMG=vosdbmgr:devel
+VDB_IMG=astrolabe/vosdbmgr:latest
 
 IMGS=${PWD}/images
 NAME=vos
