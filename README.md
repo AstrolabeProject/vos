@@ -70,24 +70,24 @@ You can use common Docker commands to monitor the status of the VO Server contai
 The `docker service` command shows whether all five VO Server containers have been instantiated:
 ```
   > docker service ls
-ID                  NAME                MODE                REPLICAS            IMAGE                    PORTS
-1m841e7liokk        vos_celery          replicated          1/1                 astrolabe/cuts:latest
-v59tayb4v5n0        vos_cuts            replicated          1/1                 astrolabe/cuts:latest    *:8000->8000/tcp
-7lxjg8h50l0c        vos_pgdb            replicated          1/1                 astrolabe/vosdb:latest   *:5432->5432/tcp
-dab3jzqf032d        vos_redis           replicated          1/1                 redis:5.0-alpine         *:6379->6379/tcp
-zbynaauuna18        vos_vos             replicated          1/1                 astrolabe/dals:1H        *:8080->8080/tcp
+ID                  NAME                MODE                REPLICAS            IMAGE               PORTS
+mc6fuwfnibbg        vos_celery          replicated          1/1                 cuts:devel
+5cz497paw1pd        vos_cuts            replicated          1/1                 cuts:devel          *:8000->8000/tcp
+lsncxzizxs5w        vos_dals            replicated          1/1                 dals:1H             *:8080->8080/tcp
+sehgkg8x8emq        vos_pgdb            replicated          1/1                 vosdb:devel         *:5432->5432/tcp
+ethrhhbfgh7p        vos_redis           replicated          1/1                 redis:5.0-alpine    *:6379->6379/tcp
 ```
 The VO Server will be ready when the `REPLICAS` column shows 1/1 for all five VO Server containers.
 
 The `docker container` command is also useful to view the status of the VO Server containers:
 ```
   > docker container ls -a
-CONTAINER ID        IMAGE                    COMMAND                  CREATED              STATUS               PORTS           NAMES
-7138a0f4ab88        astrolabe/dals:1H        "catalina.sh run"        1 minute ago         Up 1 minute          8080/tcp        vos_vos.1.qiwaa1vf8uoj4dpab5hovakxp
-4c63d1668481        astrolabe/cuts:latest    "gunicorn -c /cuts/c…"   1 minute ago         Up 1 minute                          vos_cuts.1.v8w6gs1rjo1jecu64xbov41qs
-e2a970bfa0b4        astrolabe/cuts:latest    "celery worker -l de…"   1 minute ago         Up 1 minute                          vos_celery.1.sdiia00iapiwyxdu6cvlubsar
-59008932fd1f        astrolabe/vosdb:latest   "docker-entrypoint.s…"   1 minute ago         Up 1 minute          5432/tcp        vos_pgdb.1.h7petbeck29mf39stnoye8cip
-6b970370405f        redis:5.0-alpine         "docker-entrypoint.s…"   1 minute ago         Up 1 minute          6379/tcp        vos_redis.1.x5n2ngphgyzxs87etrideb5sl
+CONTAINER ID        IMAGE               COMMAND                  CREATED              STATUS              PORTS               NAMES
+d88d173dc2e5        cuts:devel          "gunicorn -c /cuts/c…"   54 seconds ago       Up 52 seconds                           vos_cuts.1.dks9tf4g5znd2iutsbvvcom46
+edd722fe3de0        dals:1H             "catalina.sh run"        56 seconds ago       Up 53 seconds       8080/tcp            vos_dals.1.n2dd3d9mrlbh0s2dtjrfbk2j0
+2b05df2f1017        cuts:devel          "celery worker -l de…"   57 seconds ago       Up 55 seconds                           vos_celery.1.vzfoa25qrv6y9b8nhtw5ws9oh
+a9612421f3be        vosdb:devel         "docker-entrypoint.s…"   59 seconds ago       Up 56 seconds       5432/tcp            vos_pgdb.1.qycrcdbmmhi9sru0900khz1jg
+7bdf34b62b46        redis:5.0-alpine    "docker-entrypoint.s…"   About a minute ago   Up 58 seconds       6379/tcp            vos_redis.1.ptx5v3snxr21f0ecyinaex73v
 ```
 The `STATUS` column (to the right) should eventually show "Up" for all five VO Server containers.
 
