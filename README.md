@@ -13,11 +13,16 @@ This is a public code repository of the [Astrolabe Project](http://astrolabe.ari
 
 ### 1. Checkout this project (ONCE)
 
-Git `clone` this project to your local disk and enter the project directory:
+Git `clone` this project somewhere within your "home" area and enter the project directory. For example:
 ```
+  > cd /Users/johndoe/astro
   > git clone --branch onehost https://github.com/AstrolabeProject/vos.git
   > cd vos
+  > pwd
+/Users/johndo/astro/vos
 ```
+
+***Note**: hereafter, this directory will be called the "VOS project directory".*
 
 
 ### 2. Enable Docker swarm mode (ONCE)
@@ -40,11 +45,50 @@ Swarm: active
 
 ### 3. Prepare the deployment (ONCE)
 
-In this custom, standalone version of the VO Server, the database and all images reside on your local host machine. To set up the server, you must create a directory containing the JWST images, or link to an existing one. **The image directory (or link) must be created in the working directory for this project** (i.e. the directory into which you checked out this project).
+In this custom, standalone version of the VO Server, the database and all images reside on your local host machine. To set up the server, you must create a directory containing the JWST images OR link to an existing one. **The image directory (or link) must be created in the VOS project directory** (i.e. the directory into which you checked out this project).
 
 To create a link (which must be named "*images*") to an existing directory of JWST images on your local disk:
 ```
+  > pwd
+/Users/johndoe/astro/vos
+
   > ln -s path/to/directory/of/your/JWST/fits/files images
+```
+
+***Note**: On OS X (Apple) machines, Docker (by default) can only see files located within the directory hierarchies **/Users**, **/Volumes**, and **/private**. Make sure that the directory containing your images is located within one of these hierarchies. For example:*
+```
+  > ln -s /Users/johndoe/astro/jwst/mosaics images
+```
+
+
+#### 3.1 Image Collections
+
+Starting with the 2/2/2020 version of the Astrolabe VO Server, the *images* directory (linked from the VOS project directory) **must** be organized as a hierarchy (tree) of directories representing different image "collections".
+
+***Note**: The 2/2/2020 version of the VO Server only recognizes two specific image collections: **JADES** and **DC_191217**. The image directories must have these names and be organized as follows:*
+
+```
+images/
+├── DC_191217
+│   ├── F090W.fits
+│   ├── F115W.fits
+│   ├── F150W.fits
+│   ├── F200W.fits
+│   ├── F277W.fits
+│   ├── F335M.fits
+│   ├── F356W.fits
+│   ├── F410M.fits
+│   ├── F444W.fits
+├── JADES
+│   ├── goods_s_F090W_2018_08_29.fits
+│   ├── goods_s_F115W_2018_08_29.fits
+│   ├── goods_s_F150W_2018_08_29.fits
+│   ├── goods_s_F200W_2018_08_29.fits
+│   ├── goods_s_F277W_2018_08_29.fits
+│   ├── goods_s_F335M_2018_08_29.fits
+│   ├── goods_s_F356W_2018_08_30.fits
+│   ├── goods_s_F410M_2018_08_30.fits
+│   ├── goods_s_F444W_2018_08_31.fits
 ```
 
 
