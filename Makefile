@@ -1,5 +1,5 @@
-# BOXLINK='https://arizona.box.com/s/hzfpzj71k4r3x2tpouccfycsug3yaxf4'
-BOXLINK='https://arizona.box.com/s/atc51jfnod7hm4se1xql0xm61q65gnuz'
+# BOXLINK='https://arizona.box.com/shared/static/hzfpzj71k4r3x2tpouccfycsug3yaxf4.gz'
+BOXLINK='https://arizona.box.com/shared/static/atc51jfnod7hm4se1xql0xm61q65gnuz.gz'
 ENVLOC=/etc/trhenv
 
 FFAL=ffal
