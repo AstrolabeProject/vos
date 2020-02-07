@@ -90,4 +90,4 @@ stopjl:
 # load data from the localhost into the VOS database
 loadData:
 	docker run -it --rm --name ${VDB} --network ${NET} ${VDB_IMG} -c load -l ${BOXLINK} -v
-	cp -ip HorseHead.fits ${IMGS}
+	cp -fp HorseHead.fits ${IMGS}
