@@ -1,4 +1,3 @@
-# BOXLINK='https://arizona.box.com/shared/static/hzfpzj71k4r3x2tpouccfycsug3yaxf4.gz'
 # BOXLINK='https://arizona.box.com/shared/static/atc51jfnod7hm4se1xql0xm61q65gnuz.gz'
 BOXLINK='https://arizona.box.com/shared/static/z9x3bmrsn6xhul2ht3han3hno38hc1et.gz'
 ENVLOC=/etc/trhenv
@@ -11,6 +10,7 @@ FFAL_PORT=8888
 JAL=jupal
 JAL_IMG=astrolabe/jupal:1H
 JAL_JOPTS='_JAVA_OPTIONS=-Xms512m -Xmx8192m'
+JAL_DATA=${PWD}/data
 JAL_WORK=${PWD}/work
 JAL_PORT=9999
 
@@ -47,8 +47,8 @@ setup-base:
 	docker pull python:3.7.5
 	docker pull postgres:10.11
 	docker pull tomcat:8.5.49
-	docker pull jupyter/scipy-notebook:7a0c7325e470
-	docker pull ipac/firefly:release-2019.3.2
+	docker pull jupyter/scipy-notebook:31b807ec9e83
+	docker pull ipac/firefly:release-2019.4.0
 
 setup: setup-base
 	docker pull astrolabe/ffal:1H
@@ -81,7 +81,7 @@ stopff:
 
 # run a custom version of JupyterLab on the VOS network
 runjl:
-	docker run -d --rm --name ${JAL} --network ${NET} -e ${JAL_JOPTS} -p${JAL_PORT}:8888 -v ${JAL_WORK}:/home/jovyan/work ${JAL_IMG}
+	docker run -d --rm --name ${JAL} --network ${NET} -e ${JAL_JOPTS} -p${JAL_PORT}:8888 -v ${JAL_WORK}:/home/jovyan/work -v ${JAL_DATA}:/home/jovyan/data ${JAL_IMG}
 
 stopjl:
 	docker stop ${JAL}
