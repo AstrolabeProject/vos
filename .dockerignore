@@ -5,6 +5,8 @@ Dockerfile
 Makefile
 docker-compose.yml
 docker-compose-prod.yml
+/catalogs
+/data
 /images
 **/__pycache__
 *~
