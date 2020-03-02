@@ -1,0 +1,10 @@
+accessLog: {}
+
+log:
+  level: DEBUG
+
+providers:
+  docker:
+    exposedByDefault: false
+    network: vos_net
+    swarmMode: true
