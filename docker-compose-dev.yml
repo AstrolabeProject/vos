@@ -1,10 +1,33 @@
 version: '3.7'
 
 services:
+  traefik:
+    image: traefik:v2.1.4
+    command:
+      - "--accesslog=true"
+      - "--api.dashboard=true"
+      - "--api.insecure=true"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--log.level=INFO"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=vos_net"
+      - "--providers.docker.swarmMode=true"
+      - "--providers.docker.swarmModeRefreshSeconds=60"
+    ports:
+      - 80:80
+      - 7777:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+
   redis:
     image: redis:5.0-alpine
     command: redis-server --requirepass devpassword
     deploy:
+      labels:
+        - "traefik.enable=false"
       restart_policy:
         condition: none
     volumes:
@@ -16,6 +39,8 @@ services:
   pgdb:
     image: vosdb:devel
     deploy:
+      labels:
+        - "traefik.enable=false"
       restart_policy:
         condition: on-failure
     volumes:
@@ -28,6 +53,8 @@ services:
     image: cuts:devel
     command: celery worker -l debug -A cuts.blueprints.img.tasks
     deploy:
+      labels:
+        - "traefik.enable=false"
       restart_policy:
         condition: none
     depends_on:
@@ -37,6 +64,10 @@ services:
   dals:
     image: dals:1H
     deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.dals.rule=PathPrefix(`/dals`)"
+        - "traefik.http.services.dals.loadbalancer.server.port=8080"
       restart_policy:
         condition: on-failure
     volumes:
@@ -50,6 +81,10 @@ services:
   cuts:
     image: cuts:devel
     deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.cuts.rule=PathPrefix(`/cuts`)"
+        - "traefik.http.services.cuts.loadbalancer.server.port=8000"
       restart_policy:
         condition: none
     environment:
