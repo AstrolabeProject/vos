@@ -8,15 +8,19 @@ services:
       - "--api.dashboard=true"
       - "--api.insecure=true"
       - "--entrypoints.web.address=:80"
-      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.websec.address=:443"
       - "--log.level=WARNING"
       - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.exposedByDefault=false"
       - "--providers.docker.network=vos_net"
       - "--providers.docker.swarmMode=true"
       - "--providers.docker.swarmModeRefreshSeconds=60"
+      - "--providers.docker.tls.ca=/vos/config/certs/gd_bundle-g2-g1.crt"
+      - "--providers.docker.tls.cert=/vos/config/certs/cyverse.org.crt"
+      - "--providers.docker.tls.key=/vos/config/certs/cyverse.key"
     ports:
       - 80:80
+      - 443:443
       - 7777:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -62,12 +66,15 @@ services:
 
 
   dals:
-    image: dals:1H
+    image: dals:devel
     deploy:
       labels:
         - "traefik.enable=true"
+        - "traefik.http.routers.dals.entryPoints=websec"
+#        - "traefik.http.routers.dals.tls={}"
         - "traefik.http.routers.dals.rule=PathPrefix(`/dals`)"
         - "traefik.http.services.dals.loadbalancer.server.port=8080"
+        - "traefik.http.middlewares.dals.digestauth.usersFile=/vos/config/users.dig"
       restart_policy:
         condition: on-failure
     volumes:
@@ -83,8 +90,11 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
+        - "traefik.http.routers.cuts.entryPoints=websec"
+#        - "traefik.http.routers.cuts.tls=true"
         - "traefik.http.routers.cuts.rule=PathPrefix(`/cuts`)"
         - "traefik.http.services.cuts.loadbalancer.server.port=8000"
+        - "traefik.http.middlewares.cuts.digestauth.usersFile=/vos/config/users.dig"
       restart_policy:
         condition: none
     environment:
