@@ -1,18 +1,5 @@
-# BOXLINK='https://arizona.box.com/shared/static/atc51jfnod7hm4se1xql0xm61q65gnuz.gz'
 BOXLINK='https://arizona.box.com/shared/static/z9x3bmrsn6xhul2ht3han3hno38hc1et.gz'
 ENVLOC=/etc/trhenv
-
-FFAL=ffal
-FFAL_IMG=astrolabe/ffal:1H
-FFAL_JOPTS='_JAVA_OPTIONS=-Xms512m -Xmx10240m'
-FFAL_PORT=8888
-
-JAL=jupal
-JAL_IMG=astrolabe/jupal:1H
-JAL_JOPTS='_JAVA_OPTIONS=-Xms512m -Xmx8192m'
-JAL_DATA=${PWD}/data
-JAL_WORK=${PWD}/work
-JAL_PORT=9999
 
 VDB=vosdbmgr
 VDB_IMG=astrolabe/vosdbmgr:latest
@@ -22,17 +9,14 @@ NAME=vos
 NET=vos_net
 STACK=vos
 
-.PHONY: help down loadData runff stopff runjl stopjl setup up
+.PHONY: help down loadData setup up
 
 help:
-	@echo 'Make what? help, up, setup, loadData, runff, stopff, runjl, down'
+	@echo 'Make what? help, up, setup, loadData, down'
 	@echo '  where: help     - show this help message'
 	@echo '         up       - start all VOS production containers'
 	@echo '         setup    - download/update all component containers from DockerHub'
 	@echo '         loadData - download data and load it into the VOS database (ONLY RUN ONCE)'
-	@echo '         runff    - start the custom Firefly container on the VOS network'
-	@echo '         stopff   - stop the running Firefly container'
-	@echo '         runjl    - start the custom JupyterLab container on the VOS network'
 	@echo '         down     - stop all VOS containers'
 
 exec:
@@ -51,10 +35,10 @@ setup-base:
 	docker pull ipac/firefly:release-2019.4.0
 
 setup: setup-base
-	docker pull astrolabe/ffal:1H
+	docker pull astrolabe/ffal:latest
 	docker pull astrolabe/cuts:latest
-	docker pull astrolabe/dals:1H
-	docker pull astrolabe/jupal:1H
+	docker pull astrolabe/dals:latest
+	docker pull astrolabe/jupal:latest
 	docker pull astrolabe/vosdb:latest
 	docker pull astrolabe/vosdbmgr:latest
 
@@ -69,22 +53,6 @@ up-dev: # setup-base
 up: # setup
 	echo "Starting PRODUCTION stack..."
 	docker stack deploy -c docker-compose.yml ${STACK}
-
-
-# run a custom version of Firefly on the VOS network
-runff:
-	docker run -d --rm --name ${FFAL} --network ${NET} -p${FFAL_PORT}:8080 -e ${FFAL_JOPTS} -v ${IMGS}:/external ${FFAL_IMG}
-
-stopff:
-	docker stop ${FFAL}
-
-
-# run a custom version of JupyterLab on the VOS network
-runjl:
-	docker run -d --rm --name ${JAL} --network ${NET} -e ${JAL_JOPTS} -p${JAL_PORT}:8888 -v ${JAL_WORK}:/home/jovyan/work -v ${JAL_DATA}:/home/jovyan/data ${JAL_IMG}
-
-stopjl:
-	docker stop ${JAL}
 
 
 # load data from the localhost into the VOS database
