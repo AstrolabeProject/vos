@@ -35,10 +35,8 @@ setup-base:
 	docker pull ipac/firefly:release-2019.4.0
 
 setup: setup-base
-	docker pull astrolabe/ffal:latest
 	docker pull astrolabe/cuts:latest
 	docker pull astrolabe/dals:latest
-	docker pull astrolabe/jupal:latest
 	docker pull astrolabe/vosdb:latest
 	docker pull astrolabe/vosdbmgr:latest
 
