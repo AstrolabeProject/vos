@@ -1,28 +1,29 @@
-version: '3.7'
+version: "3.7"
 
 services:
   traefik:
-    image: traefik:v2.1.4
+    image: traefik:v2.1.6
     command:
       - "--accesslog=true"
       - "--api.dashboard=true"
       - "--api.insecure=true"
       - "--entrypoints.web.address=:80"
-      - "--entrypoints.websec.address=:443"
-      - "--log.level=WARNING"
+#      - "--entrypoints.websec.address=:443"
+      - "--log.level=DEBUG"
       - "--providers.docker=true"
       - "--providers.docker.exposedByDefault=false"
       - "--providers.docker.network=vos_net"
       - "--providers.docker.swarmMode=true"
       - "--providers.docker.swarmModeRefreshSeconds=60"
-      - "--providers.docker.tls.ca=/vos/config/certs/gd_bundle-g2-g1.crt"
-      - "--providers.docker.tls.cert=/vos/config/certs/cyverse.org.crt"
-      - "--providers.docker.tls.key=/vos/config/certs/cyverse.key"
+#      - "--providers.docker.tls.ca=/vos/config/certs/gd_bundle-g2-g1.crt"
+#      - "--providers.docker.tls.cert=/vos/config/certs/cyverse.org.crt"
+#      - "--providers.docker.tls.key=/vos/config/certs/cyverse.key"
     ports:
       - 80:80
       - 443:443
       - 7777:8080
     volumes:
+      - /vos/config:/vos/config
       - /var/run/docker.sock:/var/run/docker.sock
 
 
@@ -37,7 +38,7 @@ services:
     volumes:
       - redis:/data
     ports:
-      - '6379:6379'
+      - "6379:6379"
 
 
   pgdb:
@@ -70,14 +71,16 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.dals.entryPoints=websec"
-#        - "traefik.http.routers.dals.tls={}"
+        - "traefik.http.middlewares.dals-auth.digestauth.usersFile=/vos/config/users.dig"
+        - "traefik.http.routers.dals.entryPoints=web"
+#        - "traefik.http.routers.dals.tls=true"
+        - "traefik.http.routers.dals.middlewares=dals-auth"
         - "traefik.http.routers.dals.rule=PathPrefix(`/dals`)"
         - "traefik.http.services.dals.loadbalancer.server.port=8080"
-        - "traefik.http.middlewares.dals.digestauth.usersFile=/vos/config/users.dig"
       restart_policy:
         condition: on-failure
     volumes:
+      - /vos/config:/vos/config
       - ./images:/vos/images
     ports:
       - "8080:8080"
@@ -90,19 +93,21 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.cuts.entryPoints=websec"
+        - "traefik.http.middlewares.cuts-auth.digestauth.usersFile=/vos/config/users.dig"
+        - "traefik.http.routers.cuts.entryPoints=web"
 #        - "traefik.http.routers.cuts.tls=true"
+        - "traefik.http.routers.cuts.middlewares=cuts-auth"
         - "traefik.http.routers.cuts.rule=PathPrefix(`/cuts`)"
         - "traefik.http.services.cuts.loadbalancer.server.port=8000"
-        - "traefik.http.middlewares.cuts.digestauth.usersFile=/vos/config/users.dig"
       restart_policy:
         condition: none
     environment:
-      PYTHONUNBUFFERED: 'true'
+      PYTHONUNBUFFERED: "true"
     volumes:
-      - './images:/vos/images:ro'
+      - /vos/config:/vos/config
+      - ./images:/vos/images:ro
     ports:
-      - '8000:8000'
+      - "8000:8000"
     depends_on:
       - celery
 
