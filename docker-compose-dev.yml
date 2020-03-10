@@ -45,6 +45,7 @@ services:
       - "8080:8080"
     depends_on:
       - pgdb
+      - nginx
 
 
   cuts:
@@ -60,6 +61,7 @@ services:
       - "8000:8000"
     depends_on:
       - celery
+      - nginx
 
 
   nginx:
@@ -76,14 +78,13 @@ services:
     ports:
       - 80:80
 #      - 443:443
-    depends_on:
-      - cuts
-      - dals
-
+    networks:
+      - vos_net
+      - default
 
 
 networks:
-  default:
+  vos_net:
     name: vos_net
     attachable: true
 
