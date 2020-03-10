@@ -1,6 +1,20 @@
 version: "3.7"
 
 services:
+  nginx:
+    image: nginx:1.17.9
+    command:
+    ports:
+      - 80:80
+#      - 443:443
+    environment:
+#      - NGINX_HOST=hector.cyverse.org
+      - NGINX_HOST=esne
+      - NGINX_PORT=80
+    volumes:
+      - /vos/config/nginx.conf:/etc/nginx/nginx.conf
+
+
   redis:
     image: redis:5.0-alpine
     command: redis-server --requirepass devpassword
