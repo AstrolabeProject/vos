@@ -11,6 +11,8 @@ services:
       - redis:/data
     ports:
       - "6379:6379"
+    networks:
+      - vos_net
 
 
   pgdb:
@@ -22,6 +24,8 @@ services:
       - pgdata:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    networks:
+      - vos_net
 
 
   celery:
@@ -30,6 +34,8 @@ services:
     deploy:
       restart_policy:
         condition: none
+    networks:
+      - vos_net
     depends_on:
       - redis
 
@@ -43,6 +49,8 @@ services:
       - ./images:/vos/images
     ports:
       - "8080:8080"
+    networks:
+      - vos_net
     depends_on:
       - pgdb
 
@@ -58,6 +66,8 @@ services:
       - ./images:/vos/images:ro
     ports:
       - "8000:8000"
+    networks:
+      - vos_net
     depends_on:
       - celery
 
