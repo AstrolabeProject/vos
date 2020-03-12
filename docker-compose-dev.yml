@@ -45,7 +45,6 @@ services:
       - "8080:8080"
     depends_on:
       - pgdb
-      - nginx
 
 
   cuts:
@@ -61,26 +60,30 @@ services:
       - "8000:8000"
     depends_on:
       - celery
-      - nginx
 
 
   nginx:
     image: nginx:1.17.9
     deploy:
       restart_policy:
-        condition: none
+        condition: on-failure
     environment:
 #      - NGINX_HOST=hector.cyverse.org
       - NGINX_HOST=esne
       - NGINX_PORT=80
+      - NGINX_PORT=443
     volumes:
       - /vos/config/nginx.conf:/etc/nginx/nginx.conf
+      - /vos/config/certs:/vos/config/certs:ro
     ports:
       - 80:80
-#      - 443:443
+      - 443:443
     networks:
       - vos_net
       - default
+    depends_on:
+      - cuts
+      - dals
 
 
 networks:
