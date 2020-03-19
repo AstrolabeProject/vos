@@ -72,6 +72,22 @@ services:
       - celery
 
 
+  firefly:
+    image: astrolabe/ffal:latest
+    deploy:
+      restart_policy:
+        condition: none
+    environment:
+      # - DEBUG=TRUE
+      - _JAVA_OPTIONS=-Xms512m -Xmx16384m
+    volumes:
+      - ./images:/external:ro
+    ports:
+      - "8888:8080"
+    networks:
+      - default
+
+
   nginx:
     image: nginx:1.17.9
     deploy:

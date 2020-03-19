@@ -38,6 +38,7 @@ setup-base:
 setup: setup-base
 	docker pull astrolabe/cuts:latest
 	docker pull astrolabe/dals:latest
+	docker pull astrolabe/ffal:latest
 	docker pull astrolabe/vosdb:latest
 	docker pull astrolabe/vosdbmgr:latest
 
