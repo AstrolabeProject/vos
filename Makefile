@@ -33,6 +33,7 @@ setup-base:
 	docker pull tomcat:8.5.49
 	docker pull jupyter/scipy-notebook:31b807ec9e83
 	docker pull ipac/firefly:release-2019.4.0
+	docker pull nginx:1.17.9
 
 setup: setup-base
 	docker pull astrolabe/cuts:latest
