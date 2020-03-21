@@ -45,6 +45,8 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
+    environment:
+      - _JAVA_OPTIONS=-Xms256m -Xmx2048m -Djava.security.egd=file:///dev/urandom
     volumes:
       - ./images:/vos/images
     ports:
