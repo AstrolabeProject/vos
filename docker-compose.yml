@@ -87,7 +87,6 @@ services:
       - 443:443
     networks:
       - vos_net
-      - default
     depends_on:
       - cuts
       - dals
