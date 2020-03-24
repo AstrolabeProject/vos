@@ -4,12 +4,12 @@ ENVLOC=/etc/trhenv
 
 FFAL=ffal
 FFAL_IMG=astrolabe/ffal:1H
-FFAL_JOPTS='_JAVA_OPTIONS=-Xms512m -Xmx10240m'
+FFAL_JOPTS='_JAVA_OPTIONS=-Xms512m -Xmx10240m -Djava.security.egd=file:///dev/urandom'
 FFAL_PORT=8888
 
 JAL=jupal
 JAL_IMG=astrolabe/jupal:1H
-JAL_JOPTS='_JAVA_OPTIONS=-Xms512m -Xmx8192m'
+JAL_JOPTS='_JAVA_OPTIONS=-Xms512m -Xmx8192m -Djava.security.egd=file:///dev/urandom'
 JAL_DATA=${PWD}/data
 JAL_WORK=${PWD}/work
 JAL_PORT=9999
@@ -53,7 +53,7 @@ setup-base:
 setup: setup-base
 	docker pull astrolabe/ffal:1H
 	docker pull astrolabe/cuts:latest
-	docker pull astrolabe/dals:1H
+	docker pull astrolabe/dals:latest
 	docker pull astrolabe/jupal:1H
 	docker pull astrolabe/vosdb:latest
 	docker pull astrolabe/vosdbmgr:latest

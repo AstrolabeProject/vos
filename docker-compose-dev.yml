@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 
 services:
   redis:
@@ -10,7 +10,9 @@ services:
     volumes:
       - redis:/data
     ports:
-      - '6379:6379'
+      - "6379:6379"
+    networks:
+      - vos_net
 
 
   pgdb:
@@ -22,6 +24,8 @@ services:
       - pgdata:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    networks:
+      - vos_net
 
 
   celery:
@@ -30,19 +34,25 @@ services:
     deploy:
       restart_policy:
         condition: none
+    networks:
+      - vos_net
     depends_on:
       - redis
 
 
   dals:
-    image: dals:1H
+    image: dals:devel
     deploy:
       restart_policy:
         condition: on-failure
+    environment:
+      - _JAVA_OPTIONS=-Xms256m -Xmx2048m -Djava.security.egd=file:///dev/urandom
     volumes:
       - ./images:/vos/images
     ports:
       - "8080:8080"
+    networks:
+      - vos_net
     depends_on:
       - pgdb
 
@@ -53,17 +63,19 @@ services:
       restart_policy:
         condition: none
     environment:
-      PYTHONUNBUFFERED: 'true'
+      PYTHONUNBUFFERED: "true"
     volumes:
-      - './images:/vos/images:ro'
+      - ./images:/vos/images:ro
     ports:
-      - '8000:8000'
+      - "8000:8000"
+    networks:
+      - vos_net
     depends_on:
       - celery
 
 
 networks:
-  default:
+  vos_net:
     name: vos_net
     attachable: true
 
