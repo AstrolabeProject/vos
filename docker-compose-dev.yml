@@ -87,7 +87,7 @@ services:
     ports:
       - "8888:8080"
     networks:
-      - default
+      - vos_net
 
 
   nginx:
@@ -103,10 +103,10 @@ services:
       - 443:443
     networks:
       - vos_net
-      - default
     depends_on:
       - cuts
       - dals
+      - firefly
 
 
 networks:
