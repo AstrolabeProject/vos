@@ -1,4 +1,3 @@
-# BOXLINK='https://arizona.box.com/shared/static/atc51jfnod7hm4se1xql0xm61q65gnuz.gz'
 BOXLINK='https://arizona.box.com/shared/static/z9x3bmrsn6xhul2ht3han3hno38hc1et.gz'
 ENVLOC=/etc/trhenv
 
@@ -51,9 +50,9 @@ setup-base:
 	docker pull ipac/firefly:release-2019.4.0
 
 setup: setup-base
-	docker pull astrolabe/ffal:1H
 	docker pull astrolabe/cuts:latest
 	docker pull astrolabe/dals:latest
+	docker pull astrolabe/ffal:1H
 	docker pull astrolabe/jupal:1H
 	docker pull astrolabe/vosdb:latest
 	docker pull astrolabe/vosdbmgr:latest
