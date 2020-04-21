@@ -17,11 +17,17 @@ NAME=${JAL}
 help:
 	@echo 'Make what? help, runjl'
 	@echo '  where: help     - show this help message'
+	@echo '         setup    - download/update all component containers from DockerHub'
 	@echo '         runjl    - start the custom JupyterLab container on this host'
 
 exec:
 	docker cp .bash_env ${NAME}:${ENVLOC}
 	docker exec -it ${NAME} bash
+
+
+# get the latest image from DockerHub
+setup:
+	docker pull ${JAL_IMG}
 
 
 # dummy targets to inform users that the custom version of Firefly is running on Hector
@@ -40,7 +46,7 @@ runjl:
 stopjl:
 	@echo ''
 	@echo 'Please stop the JupiterLab container from within Jupiterlab by selecting the "File/Shut Down" menu item.'
-	@echo 'If this fails you can force a shutdown with the "make killjl" command.'
+	@echo 'As a last resort, you can force a shutdown with the "make killjl" command (NOTE! this may lose changes and/or data).'
 	@echo ''
 
 killjl:
