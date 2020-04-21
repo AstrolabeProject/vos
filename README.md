@@ -7,12 +7,13 @@ This is a public code repository of the [Astrolabe Project](http://astrolabe.ari
 
 **Purpose**: VOS is an **integration** project which documents, coordinates, and administers the separate containerized components of the Astrolabe Virtual Observatory Server.
 
-***Note**: Currently, the Astrolabe VO and Image/Cutout Servers are hosted, in the cloud, by the [Cyverse Project](http://cyverse.org). This special (master) branch of the VOS project provides an Astrolabe-customized JupyterLab server which connects to the Astrolabe VO and Image/Cutout Servers running on Cyverse hosts. You can use the **onehost** branch of this project to create an entirely local installation of the Astrolabe servers.*
+***Note**: Currently, the Astrolabe VO and Image/Cutout Servers are hosted by the [Cyverse Project](http://cyverse.org). The **master** branch of this project provides an Astrolabe-customized JupyterLab notebook container which can connect to the Astrolabe servers running on Cyverse hosts. Alternatively, to create an entirely local installation of the Astrolabe servers, the **onehost** branch of this project may be used.*
 
 
-## The Astrolabe-customized version of JupyterLab
+## Installing the Astrolabe-customized version of JupyterLab
 
-***Note**: Installing the Astrolabe-customized version of JupyterLab requires a working Docker installation, version 19.03 or greater.*
+***Note**: Installing the Astrolabe-customized version of JupyterLab requires a working Docker installation, version 19.03 or greater, and the Git and Make programs.*
+
 
 ### 1. Checkout this project (ONCE)
 
@@ -28,54 +29,20 @@ Git `clone` this project somewhere within your "home" area and enter the project
 ***Note**: hereafter, this directory will be called the "VOS project directory".*
 
 
-### 2. Download the Server software (ONCE)
+### 2. Download the software (ONCE)
 
-This (master) branch of the project provides an Astrolabe-customized JupyterLab server which connects to the Astrolabe VO and Image/Cutout Servers running at Cyverse.
+This, the **master** branch of the project, provides an Astrolabe-customized version of JupyterLab which can connect to the Astrolabe VO and Image/Cutout Servers, running at Cyverse.
 
-To reduce the time necessary for the JupyterLab server to start up, you should initially download the container. The VOS Makefile includes a command to do this:
+To reduce the time necessary for JupyterLab to start up, you should initially download the Docker container. The VOS Makefile includes a command to do this:
 ```
   > make setup
 ```
 ***Note: it may take several minutes to download the container**, so you may have time to get a cup of coffee.*
 
 
-### 3. Start the local JupyterLab Server
+### Using the Astrolabe-customized version of JupyterLab
 
-Once the JupyterLab container has been downloaded to your local host, start the it using `Make`:
-```
-  > make runjl
-```
-and then wait a few seconds for the container to initialize.
-
-You can use common Docker commands to monitor the status of the container:
-
-The `docker container` command is useful to view the status of containers:
-```
-  > docker container ls -a
-CONTAINER ID        IMAGE                   COMMAND                  CREATED             STATUS              PORTS                    NAMES
-cb7442e2f55b        astrolabe/jupal:latest  "jupyter lab --no-br…"   3 seconds ago       Up 2 seconds        0.0.0.0:9999->8888/tcp   jupal
-
-```
-The `STATUS` column (to the right) should show "Up" for the JupyterLab container.
-
-
-### Using the Astrolabe-customized version of JupyterLab notebook
-
-For instructions on starting, stopping, and using the Astrolabe-customized version of JupyterLab notebook, please see the [JupAL document](https://github.com/AstrolabeProject/vos/blob/master/docs/JupAL.md).
-
-
-## Stopping the local JupyterLab Server
-
-The JupyterLab server is best stopped **from within** JupyterLab itself. To shutdown JupyterLab, open the `File` menu in the menubar, and select the `Shut Down` menu item.
-
-If you are unable to shutdown the JupterLab server from within JupyterLab, you can, as a last resort, force the container to stop. **Forcing the container to stop is not recommended as the normal shutdown procedure because of the possibility that you can lose unsaved work and/or data.**
-
-To force the customized version of the JupyterLab server to stop:
-```
-  > make killjl
-```
-
-The status of the JupyterLab server container can be monitored with the `docker container ls -a` command described in the [Startup](#start-the-local-jupyterlab-server) section.
+For instructions on starting, stopping, and using the Astrolabe-customized version of JupyterLab, please see the [JupAL document](https://github.com/AstrolabeProject/vos/blob/master/docs/JupAL.md).
 
 
 ## License
