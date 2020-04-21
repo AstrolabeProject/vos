@@ -13,15 +13,13 @@ Please refer to the Astrolabe/VOS project [README document](https://github.com/A
 
 ## Starting the local JupyterLab container
 
-Once the JupyterLab Docker container has been downloaded to your local host, start the it using `Make`:
+Once the JupyterLab Docker container has been downloaded to your local host, start it using `Make`:
 ```
   > make runjl
 ```
 and then wait a few seconds for the container to initialize.
 
-You can use common Docker commands to monitor the status of the container:
-
-The `docker container` command is useful to view the status of containers:
+You can use common Docker commands to monitor the status of the container. For example, the `docker container` command is useful to view the status of containers:
 ```
   > docker container ls -a
 CONTAINER ID        IMAGE                   COMMAND                  CREATED             STATUS              PORTS                    NAMES

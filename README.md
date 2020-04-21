@@ -31,7 +31,7 @@ Git `clone` this project somewhere within your "home" area and enter the project
 
 ### 2. Download the software (ONCE)
 
-This, the **master** branch of the project, provides an Astrolabe-customized version of JupyterLab which can connect to the Astrolabe VO and Image/Cutout Servers, running at Cyverse.
+This, the **master** branch of the project, provides an Astrolabe-customized version of JupyterLab which can connect to the Astrolabe VO and Image/Cutout Servers, running at [Cyverse](http://cyverse.org).
 
 To reduce the time necessary for JupyterLab to start up, you should initially download the Docker container. The VOS Makefile includes a command to do this:
 ```
