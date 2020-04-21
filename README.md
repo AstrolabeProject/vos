@@ -5,136 +5,82 @@ This is a public code repository of the [Astrolabe Project](http://astrolabe.ari
 
 **Author**: [Tom Hicks](https://github.com/hickst)
 
-**Purpose**: This is an Integration project which documents, coordinates, and administers the separate containerized components of the Astrolabe Virtual Observatory Server.
+**Purpose**: VOS is an **integration** project which documents, coordinates, and administers the separate containerized components of the Astrolabe Virtual Observatory Server.
 
-## Installation
+***Note**: Currently, the Astrolabe VO and Image/Cutout Servers are hosted, in the cloud, by the [Cyverse Project](http://cyverse.org). This special (master) branch of the VOS project provides an Astrolabe-customized JupyterLab server which connects to the Astrolabe VO and Image/Cutout Servers running on Cyverse hosts. You can use the **onehost** branch of this project to create an entirely local installation of the Astrolabe servers.*
 
-***Note**: Installation of the Astrolabe VO Server requires a working Docker installation, version 19.03 or greater, and **Docker must be running in swarm mode** (instructions below).*
 
-### 1. Checkout this project
+## The Astrolabe-customized version of JupyterLab
 
-Git `clone` this project to your local disk and enter the project directory:
+***Note**: Installing the Astrolabe-customized version of JupyterLab requires a working Docker installation, version 19.03 or greater.*
+
+### 1. Checkout this project (ONCE)
+
+Git `clone` this project somewhere within your "home" area and enter the project directory. For example:
 ```
-  > git clone https://github.com/AstrolabeProject/vos.git
+  > cd /Users/johndoe/astro
+  > git clone --branch onehost https://github.com/AstrolabeProject/vos.git
   > cd vos
+  > pwd
+/Users/johndo/astro/vos
 ```
 
-### 2. Enable Docker swarm mode
+***Note**: hereafter, this directory will be called the "VOS project directory".*
 
-The containers which make up the Astrolabe VO Server are orchestrated by running Docker in "swarm" mode. Swarm mode is not enabled by default. To enable swarm mode in your running Docker engine, open a shell window and type:
-```
- > docker swarm init
-```
 
-After a few seconds, you may verify that swarm mode is enabled:
-```
- > docker info | grep Swarm
-```
+### 2. Download the Server software (ONCE)
 
-If swarm mode is enabled, you should see a positive response like this:
-```
-Swarm: active
-```
+This (master) branch of the project provides an Astrolabe-customized JupyterLab server which connects to the Astrolabe VO and Image/Cutout Servers running at Cyverse.
 
-### 3. Prepare the deployment
+To reduce the time necessary for the JupyterLab server to start up, you should initially download the container. The VOS Makefile includes a command to do this:
+```
+  > make setup
+```
+***Note: it may take several minutes to download the container**, so you may have time to get a cup of coffee.*
 
-In this initial version of the VO Server, all data and images reside on your local host machine. To set up the server, you must create a directory containing your images, or link to an existing one. **The image directory (or link) must be created in the working directory for this project** (i.e. the directory into which you checked out this project).
 
-To create a link (which must be named "*images*") to an existing directory of JWST images and catalogs on your local disk:
-```
-  > ln -s path/to/directory/of/your/JWST/fits/files images
-```
+### 3. Start the local JupyterLab Server
 
-### 4. Start the VO Server
+Once the JupyterLab container has been downloaded to your local host, start the it using `Make`:
+```
+  > make runjl
+```
+and then wait a few seconds for the container to initialize.
 
-To run the Astrolabe VO Server use the `docker stack deploy` command:
-```
-  > docker stack deploy -c docker-compose.yml vos
-```
-OR, if you are familiar with `Make`, use the convenient Makefile:
-```
-  > make up
-```
-and then wait for the VO Server containers to initialize, which **may take several minutes** as the containers must be downloaded (the first time only) and started.
+You can use common Docker commands to monitor the status of the container:
 
-You can use common Docker commands to monitor the status of the VO Server containers. The `docker service` command shows whether all five VO Server containers have been instantiated:
-```
-  > docker service ls
-ID                  NAME                MODE                REPLICAS            IMAGE                           PORTS
-1m841e7liokk        vos_celery          replicated          1/1                 astrolabe/cuts:latest
-v59tayb4v5n0        vos_cuts            replicated          1/1                 astrolabe/cuts:latest    *:8000->8000/tcp
-7lxjg8h50l0c        vos_pgdb            replicated          1/1                 astrolabe/vosdb:latest   *:5432->5432/tcp
-dab3jzqf032d        vos_redis           replicated          1/1                 redis:5.0-alpine         *:6379->6379/tcp
-zbynaauuna18        vos_vos             replicated          1/1                 astrolabe/dals:latest    *:8080->8080/tcp
-```
-The VO Server will be ready when the `REPLICAS` column shows 1/1 for all five VO Server containers.
-
-The `docker container` command is also useful to view the status of the VO Server containers:
+The `docker container` command is useful to view the status of containers:
 ```
   > docker container ls -a
-    CONTAINER ID        IMAGE                           COMMAND                  CREATED             STATUS              PORTS                NAMES
-7138a0f4ab88        astrolabe/dals:latest    "catalina.sh run"        2 hours ago         Up 2 hours          8080/tcp             vos_vos.1.qiwaa1vf8uoj4dpab5hovakxp
-4c63d1668481        astrolabe/cuts:latest    "gunicorn -c /cuts/c…"   2 hours ago         Up 2 hours                               vos_cuts.1.v8w6gs1rjo1jecu64xbov41qs
-e2a970bfa0b4        astrolabe/cuts:latest    "celery worker -l de…"   2 hours ago         Up 2 hours                               vos_celery.1.sdiia00iapiwyxdu6cvlubsar
-59008932fd1f        astrolabe/vosdb:latest   "docker-entrypoint.s…"   2 hours ago         Up 2 hours          5432/tcp             vos_pgdb.1.h7petbeck29mf39stnoye8cip
-6b970370405f        redis:5.0-alpine         "docker-entrypoint.s…"   2 hours ago         Up 2 hours          6379/tcp             vos_redis.1.x5n2ngphgyzxs87etrideb5sl
+CONTAINER ID        IMAGE                   COMMAND                  CREATED             STATUS              PORTS                    NAMES
+cb7442e2f55b        astrolabe/jupal:latest  "jupyter lab --no-br…"   3 seconds ago       Up 2 seconds        0.0.0.0:9999->8888/tcp   jupal
+
 ```
-The `STATUS` column (to the right) should eventually show "Up" for all five VO Server containers.
+The `STATUS` column (to the right) should show "Up" for the JupyterLab container.
 
 
-### 5. Load a JWST catalog, extract and load metadata from FITS files
+### Using the Astrolabe-customized version of JupyterLab notebook
 
-***Note**: you only have to extract and load the data into the VO Server **once**; when you first install it. Docker will retain the data in a local database between runs of the VO Server.*
+For instructions on starting, stopping, and using the Astrolabe-customized version of JupyterLab notebook, please see the [JupAL document](https://github.com/AstrolabeProject/vos/blob/master/docs/JupAL.md).
 
-If you have not already done so previously, you can now load the VO Server with a JWST catalog and image metadata, extracted from the JWST FITS files which reside on your hard disk.
 
-The extraction and loading program is called FFP (for FITS File Processor) and is available as another Astrolabe Docker container. To download the FFP program:
+## Stopping the local JupyterLab Server
+
+The JupyterLab server is best stopped **from within** JupyterLab itself. To shutdown JupyterLab, open the `File` menu in the menubar, and select the `Shut Down` menu item.
+
+If you are unable to shutdown the JupterLab server from within JupyterLab, you can, as a last resort, force the container to stop. **Forcing the container to stop is not recommended as the normal shutdown procedure because of the possibility that you can lose unsaved work and/or data.**
+
+To force the customized version of the JupyterLab server to stop:
 ```
-  > docker pull astrolabe/ffp
+  > make killjl
 ```
-***Note**: you only have to do this `pull` step **once** for it to reside on your local machine.*
 
-To run the FFP program, make sure that the VO Server is running (Step 4 above) and then call `make` to extract and load the data from the `images` subdirectory of your current directory:
-```
-  > make loadData
-```
-***Note**: Loading compressed (gzipped) JWST FITS images take about 15 seconds per image (compared to about 1/4 second each when uncompressed). The JWST catalog takes about 5 minutes to process, so please be patient.*
+The status of the JupyterLab server container can be monitored with the `docker container ls -a` command described in the [Startup](#start-the-local-jupyterlab-server) section.
 
-
-## Access the VO Server
-
-If deployment was successful, you will be able to access the VO Server from within a browser on your local machine:
-
-  - Access the VO Server at [http://localhost:8080/dals/](http://localhost:8080/dals/)
-
-More commonly, however, you will probably want to access the VO Server from the [Astrolabe customized version of Firefly](https://github.com/AstrolabeProject/firefly-al). Please refer to that project for instructions on how to start a Firefly viewer which connects to your running VO Server.
-
-### Access URLs
-
-The Astrolabe VO Server provides endpoints for data and image metadata retrieval via SCS (Simple Cone Search), SIA (Simple Image Access), and TAP (Table Access Protocol). The following URLs may be used by **local VO clients** (since this is, currently, only a local server):
-
- - SCS for JWST image metadata: http://localhost:8080/dals/scs-jwst
- - SCS for the JWST catalog: http://localhost:8080/dals/scs-jcat
- - SIA for JWST image metadata: http://localhost:8080/dals/sia-jwst
- - TAP for JWST catalog and image metadata: http://localhost:8080/dals/tap-jwst
-
-### Stopping the VO Server
-
-***Note**: If you have also started an [Astrolabe customized version of Firefly](https://github.com/AstrolabeProject/firefly-al), you must stop Firefly **before** stopping the VO Server.*
-
-To stop the VO Server use the `docker stack rm` command:
-```
-  > docker stack rm vos
-```
-OR, if you are familiar with `Make`, use the convenient Makefile:
-```
-  > make down
-```
-The VO Server containers should stop within a minute or so. This can be monitored with the Docker commands given (above) in the Startup section.
 
 ## License
 
-Software licensed under Apache License Version 2.0.
+This software is licensed under Apache License Version 2.0.
 
 Copyright (c) The University of Arizona, 2019. All rights reserved.
 
