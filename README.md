@@ -20,7 +20,7 @@ This is a public code repository of the [Astrolabe Project](http://astrolabe.ari
 Git `clone` this project somewhere within your "home" area and enter the project directory. For example:
 ```
   > cd /Users/johndoe/astro
-  > git clone --branch onehost https://github.com/AstrolabeProject/vos.git
+  > git clone https://github.com/AstrolabeProject/vos.git
   > cd vos
   > pwd
 /Users/johndo/astro/vos
