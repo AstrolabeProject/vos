@@ -1,0 +1,17 @@
+\set QUIET 1
+
+\pset null '(✦)'
+-- \timing
+\x auto
+
+\set COMP_KEYWORD_CASE upper
+\set HISTFILE ~/.psql_history- :USER@:DBNAME
+\set HISTCONTROL ignoredups
+\set PAGER less
+\set PROMPT1 '%[%033[1m%]%M %n@%/%R%[%033[0m%]%# '
+\set PROMPT2 '... > '
+\set VERBOSITY verbose
+
+set search_path to sia, tap_schema, public
+
+-- \unset QUIET

@@ -21,6 +21,7 @@ help:
 
 exec:
 	docker cp .bash_env ${NAME}:${ENVLOC}
+	docker cp .psqlrc   ${NAME}:/root
 	docker exec -it ${NAME} bash
 
 
