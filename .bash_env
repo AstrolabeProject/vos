@@ -1,5 +1,6 @@
 # Bash Aliases and Functions.
 #   Written by: Tom Hicks. 02/26/2018
+#   Last Modified: Add dksql alias for internal container use.
 #
 
 # turn off the damn default aliases:
@@ -7,6 +8,7 @@ unalias l ls ll >/dev/null 2>/dev/null
 
 alias cdpath='echo $CDPATH'
 alias cls=clear
+alias dksql='psql --set SCHEMA=sia -h localhost -p 5432 -U astrolabe -d vos'
 dusm () { du -sm $* ; }
 ff () { find . -name $* -print ; }
 fps () { ps aux | grep -i $* | grep -v grep ; }
