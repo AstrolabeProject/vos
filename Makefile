@@ -1,5 +1,6 @@
 BOXLINK='https://arizona.box.com/shared/static/z9x3bmrsn6xhul2ht3han3hno38hc1et.gz'
 ENVLOC=/etc/trhenv
+PGDB=$(shell docker container ls --filter name=pgdb -q)
 
 VDB=vosdbmgr
 VDB_IMG=astrolabe/vosdbmgr:latest
@@ -9,7 +10,7 @@ NAME=vos
 NET=vos_net
 STACK=vos
 
-.PHONY: help down loadData setup up
+.PHONY: help down exec execdb loadData setup up
 
 help:
 	@echo 'Make what? help, up, setup, loadData, down'
@@ -23,6 +24,12 @@ exec:
 	docker cp .bash_env ${NAME}:${ENVLOC}
 	docker cp .psqlrc   ${NAME}:/root
 	docker exec -it ${NAME} bash
+
+execdb:
+	echo "EXECing into PGDB container ${PGDB}"
+	docker cp .bash_env ${PGDB}:${ENVLOC}
+	docker cp .psqlrc   ${PGDB}:/root
+	docker exec -it ${PGDB} bash
 
 
 # get the correct versions of the component containers on the local host
