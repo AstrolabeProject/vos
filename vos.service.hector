@@ -1,0 +1,17 @@
+# Template file for Astrolabe VOS systemd service
+[Unit]
+# Docker must have successfully started *before* we launch VOS
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+User=hickst
+WorkingDirectory=/astrolabe/vos
+ExecStart=/usr/bin/docker stack deploy -c docker-compose.yml vos
+ExecStop=/usr/bin/docker stack rm vos
+RemainAfterExit=yes
+
+[Install]
+# Start service when system boots
+WantedBy=multi-user.target
