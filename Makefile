@@ -36,10 +36,10 @@ execdb:
 setup-base:
 	docker pull ubuntu:18.04
 	docker pull redis:5.0-alpine
-	docker pull python:3.7.5
+	docker pull python:3.7.9
 	docker pull postgres:10.12
 	docker pull tomcat:8.5.49
-	docker pull jupyter/scipy-notebook:31b807ec9e83
+	# docker pull jupyter/scipy-notebook:45bfe5a474fa
 	docker pull ipac/firefly:release-2019.4.0
 	docker pull nginx:1.17.9
 
