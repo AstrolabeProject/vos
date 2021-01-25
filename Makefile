@@ -40,7 +40,7 @@ setup-base:
 	docker pull postgres:10.12
 	docker pull tomcat:8.5.49
 	# docker pull jupyter/scipy-notebook:45bfe5a474fa
-	docker pull ipac/firefly:release-2019.4.0
+	docker pull ipac/firefly:release-2020.3.2
 	docker pull nginx:1.17.9
 
 setup: setup-base
@@ -66,4 +66,4 @@ up: # setup
 # load data from the localhost into the VOS database
 loadData:
 	docker run -it --rm --name ${VDB} --network ${NET} ${VDB_IMG} -c load -l ${BOXLINK} -v
-	cp -fp HorseHead.fits ${IMGS}
+	# cp -fp HorseHead.fits ${IMGS}
