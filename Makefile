@@ -37,18 +37,18 @@ setup-base:
 	docker pull ubuntu:18.04
 	docker pull redis:5.0-alpine
 	docker pull python:3.7.9
-	docker pull postgres:10.12
+	docker pull postgres:10.15
 	docker pull tomcat:8.5.49
 	# docker pull jupyter/scipy-notebook:45bfe5a474fa
 	docker pull ipac/firefly:release-2020.3.2
 	docker pull nginx:1.17.9
 
 setup: setup-base
-	docker pull astrolabe/cuts:latest
-	docker pull astrolabe/dals:latest
-	docker pull astrolabe/ffal:latest
-	docker pull astrolabe/vosdb:latest
-	docker pull astrolabe/vosdbmgr:latest
+	docker pull astrolabe/cuts:5.0
+	docker pull astrolabe/dals:3.1
+	docker pull astrolabe/ffal:2.0
+	docker pull astrolabe/vosdb:4.1
+	docker pull astrolabe/vosdbmgr:1.1
 
 
 # start or stop a development or production stack of containers
