@@ -26,7 +26,7 @@ services:
 
   celery:
     image: astrolabe/cuts:latest
-    command: celery worker -l debug -A cuts.blueprints.img.tasks
+    command: celery -A cuts.blueprints.img.tasks worker -l debug
     deploy:
       restart_policy:
         condition: none
