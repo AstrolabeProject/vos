@@ -1,4 +1,4 @@
-BOXLINK='https://arizona.box.com/shared/static/z9x3bmrsn6xhul2ht3han3hno38hc1et.gz'
+BOXLINK='https://arizona.box.com/shared/static/0iw01873do5qy9unqaha7nxfrwwao0s6.gz'
 ENVLOC=/etc/trhenv
 PGDB=$(shell docker container ls --filter name=pgdb -q)
 
