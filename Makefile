@@ -5,7 +5,6 @@ PGDB=$(shell docker container ls --filter name=pgdb -q)
 VDBM=vosdbmgr
 VDBM_IMG=astrolabe/vosdbmgr:1.1
 
-IMGS=${PWD}/images
 NAME=vos
 NET=vos_net
 STACK=vos
@@ -66,4 +65,3 @@ up: # setup
 # load data from the localhost into the VOS database
 loadData:
 	docker run -it --rm --name ${VDBM} --network ${NET} ${VDBM_IMG} -c load -l ${BOXLINK} -v
-	# cp -fp HorseHead.fits ${IMGS}
