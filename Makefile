@@ -2,8 +2,8 @@ BOXLINK='https://arizona.box.com/shared/static/0iw01873do5qy9unqaha7nxfrwwao0s6.
 ENVLOC=/etc/trhenv
 PGDB=$(shell docker container ls --filter name=pgdb -q)
 
-VDB=vosdbmgr
-VDB_IMG=astrolabe/vosdbmgr:latest
+VDBM=vosdbmgr
+VDBM_IMG=astrolabe/vosdbmgr:1.1
 
 IMGS=${PWD}/images
 NAME=vos
@@ -65,5 +65,5 @@ up: # setup
 
 # load data from the localhost into the VOS database
 loadData:
-	docker run -it --rm --name ${VDB} --network ${NET} ${VDB_IMG} -c load -l ${BOXLINK} -v
+	docker run -it --rm --name ${VDBM} --network ${NET} ${VDBM_IMG} -c load -l ${BOXLINK} -v
 	# cp -fp HorseHead.fits ${IMGS}
