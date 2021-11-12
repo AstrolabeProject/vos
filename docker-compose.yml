@@ -14,7 +14,7 @@ services:
 
 
   pgdb:
-    image: astrolabe/vosdb:4.1
+    image: astrolabe/vosdb:5.0
     deploy:
       restart_policy:
         condition: on-failure
@@ -83,7 +83,7 @@ services:
 
 
   nginx:
-    image: nginx:1.17.9
+    image: nginx:1.21.3
     deploy:
       restart_policy:
         condition: on-failure
