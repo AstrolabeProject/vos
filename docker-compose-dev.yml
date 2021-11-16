@@ -14,7 +14,7 @@ services:
 
 
   pgdb:
-    image: vosdb:devel
+    image: astrolabe/vosdb
     deploy:
       restart_policy:
         condition: on-failure
@@ -25,7 +25,7 @@ services:
 
 
   celery:
-    image: cuts:devel
+    image: astrolabe/cuts
     command: celery -A cuts.blueprints.img.tasks worker -l debug
     deploy:
       restart_policy:
@@ -37,7 +37,7 @@ services:
 
 
   dals:
-    image: dals:devel
+    image: astrolabe/dals
     deploy:
       restart_policy:
         condition: on-failure
@@ -52,7 +52,7 @@ services:
 
 
   cuts:
-    image: cuts:devel
+    image: astrolabe/cuts
     deploy:
       restart_policy:
         condition: none
@@ -67,7 +67,7 @@ services:
 
 
   firefly:
-    image: astrolabe/ffal:latest
+    image: astrolabe/ffal
     deploy:
       restart_policy:
         condition: none
