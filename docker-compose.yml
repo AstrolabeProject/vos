@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   redis:
-    image: redis:5.0-alpine
+    image: redis:5.0.14-alpine
     command: redis-server --requirepass devpassword
     deploy:
       restart_policy:
