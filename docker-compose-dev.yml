@@ -1,23 +1,19 @@
-version: "3.7"
+version: "3.9"
 
 services:
   redis:
     image: redis:5.0.14-alpine
     command: redis-server --requirepass devpassword
-    deploy:
-      restart_policy:
-        condition: none
+    restart: "no"
     volumes:
-      - redis:/data
+      - redis:/usr/local/data/redis
     networks:
       - vos_net
 
 
   pgdb:
     image: astrolabe/vosdb
-    deploy:
-      restart_policy:
-        condition: on-failure
+    restart: "no"
     volumes:
       - pgdata:/var/lib/postgresql/data
     networks:
@@ -27,9 +23,7 @@ services:
   celery:
     image: astrolabe/cuts
     command: celery -A cuts.blueprints.img.tasks worker -l debug
-    deploy:
-      restart_policy:
-        condition: none
+    restart: "no"
     networks:
       - vos_net
     depends_on:
@@ -38,13 +32,11 @@ services:
 
   dals:
     image: astrolabe/dals
-    deploy:
-      restart_policy:
-        condition: on-failure
+    restart: on-failure
     environment:
       - _JAVA_OPTIONS=-Xms256m -Xmx2048m -Djava.security.egd=file:/dev/./urandom
     volumes:
-      - ./images:/vos/images
+      - ./images:/usr/local/data/vos/images
     networks:
       - vos_net
     depends_on:
@@ -53,13 +45,11 @@ services:
 
   cuts:
     image: astrolabe/cuts
-    deploy:
-      restart_policy:
-        condition: none
+    restart: "no"
     environment:
       PYTHONUNBUFFERED: "true"
     volumes:
-      - ./images:/vos/images:ro
+      - ./images:/usr/local/data/vos/images:ro
     networks:
       - vos_net
     depends_on:
@@ -68,9 +58,7 @@ services:
 
   firefly:
     image: astrolabe/ffal
-    deploy:
-      restart_policy:
-        condition: none
+    restart: "no"
     environment:
       # - DEBUG=TRUE
       - _JAVA_OPTIONS=-Xms512m -Xmx16384m -Djava.security.egd=file:/dev/./urandom
@@ -85,9 +73,10 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
+        delay: 5s
     volumes:
-      - /vos/config/nginx.conf:/etc/nginx/nginx.conf
-      - /vos/config:/vos/config
+      - /usr/local/data/vos/config/nginx.conf:/etc/nginx/nginx.conf
+      - /usr/local/data/vos/config:/usr/local/data/vos/config
     ports:
       - 80:80
       - 443:443

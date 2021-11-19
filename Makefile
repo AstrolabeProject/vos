@@ -7,7 +7,7 @@ VDBM_IMG=astrolabe/vosdbmgr:1.1
 
 NAME=vos
 NET=vos_net
-STACK=vos
+GROUP=vos
 
 .PHONY: help down exec execdb loadData setup up
 
@@ -52,14 +52,15 @@ setup: setup-base
 
 # start or stop a development or production stack of containers
 down:
-	docker stack rm ${STACK}
+	docker compose down ${GROUP}
 
 up-dev: # setup-base
-	docker stack deploy -c docker-compose-dev.yml ${STACK}
+	echo "Starting development stack..."
+	docker compose -f docker-compose-dev.yml -p ${GROUP} up
 
 up: # setup
 	echo "Starting PRODUCTION stack..."
-	docker stack deploy -c docker-compose.yml ${STACK}
+	docker compose -f docker-compose.yml -p ${GROUP} up --detach
 
 
 # load data from the localhost into the VOS database
