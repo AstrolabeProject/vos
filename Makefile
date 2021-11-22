@@ -52,7 +52,7 @@ setup: setup-base
 
 # start or stop a development or production stack of containers
 down:
-	docker compose down ${GROUP}
+	docker compose -p ${GROUP} down
 
 up-dev: # setup-base
 	echo "Starting development stack..."
