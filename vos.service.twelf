@@ -8,8 +8,8 @@ After=docker.service
 Type=oneshot
 User=hickst
 WorkingDirectory=/astrolabe/vos
-ExecStart=/bin/docker stack deploy -c docker-compose.yml vos
-ExecStop=/bin/docker stack rm vos
+ExecStart=/bin/docker compose -f docker-compose.yml -p vos up --detach
+ExecStop=/bin/docker compose -p vos down
 RemainAfterExit=yes
 
 [Install]
