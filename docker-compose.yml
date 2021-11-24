@@ -57,18 +57,6 @@ services:
       - celery
 
 
-  firefly:
-    image: astrolabe/ffal:2.0
-    restart: "no"
-    environment:
-      # - DEBUG=TRUE
-      - _JAVA_OPTIONS=-Xms512m -Xmx16384m -Djava.security.egd=file:/dev/./urandom
-    volumes:
-      - /usr/local/data/vos/images:/external:ro
-    networks:
-      - vos_net
-
-
   nginx:
     image: nginx:1.21.3
     deploy:

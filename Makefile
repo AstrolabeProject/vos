@@ -38,7 +38,6 @@ setup-base:
 	docker pull python:3.7.9
 	docker pull postgres:14.0
 	docker pull tomcat:8.5.49
-	# docker pull jupyter/scipy-notebook:45bfe5a474fa
 	docker pull ipac/firefly:release-2021.3.3
 	docker pull nginx:1.17.9
 
@@ -50,16 +49,15 @@ setup: setup-base
 	docker pull astrolabe/vosdbmgr:1.1
 
 
-# start or stop a development or production stack of containers
+# start or stop a development or production group of containers
 down:
 	docker compose -p ${GROUP} down
 
 up-dev: # setup-base
-	echo "Starting development stack..."
 	docker compose -f docker-compose-dev.yml -p ${GROUP} up
 
 up: # setup
-	echo "Starting PRODUCTION stack..."
+	echo "Starting PRODUCTION group..."
 	docker compose -f docker-compose.yml -p ${GROUP} up --detach
 
 
