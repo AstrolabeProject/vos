@@ -5,7 +5,7 @@ PGDB=$(shell docker container ls --filter name=pgdb -q)
 VDBM=vosdbmgr
 VDBM_IMG=astrolabe/vosdbmgr:1.1
 
-NAME=vos
+NAME=${PGDB}
 NET=vos_net
 GROUP=vos
 
